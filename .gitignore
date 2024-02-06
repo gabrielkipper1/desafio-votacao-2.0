@@ -1,0 +1,15 @@
+votacao-frontend/node_modules
+votacao-frontend/.vscode
+
+votacao-backend/node_modules
+votaoca-backend/.vscode
+
+votacao-frontend/.env
+votacao-backend/.env
+
+votacao-backend/dist
+votacao-frontend/dist
+
+votacao-frontend/tmp
+votacao-frontend/out-tsc
+votacao-frontend/bazel-out
