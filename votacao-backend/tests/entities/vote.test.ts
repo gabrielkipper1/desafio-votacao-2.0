@@ -5,14 +5,14 @@ import { VotingTopic } from '../../src/entities/voting-topic';
 
 describe('Vote Creation', () => {
     it('should create a new vote', () => {
-        const user: User = new User('1', 'foo user', 'foo@test.com', '1234');
-        const topic: VotingTopic = new VotingTopic('Foo Topic');
-        const vote: Vote = new Vote(user, topic, VotingOption.NO);
+        const user: User = User.create('foo user', 'foo@test.com', '1234');
+        const topic: VotingTopic = VotingTopic.create('Foo Topic', 'Foo category');
+        const vote: Vote = Vote.create(user, topic, VotingOption.NO);
         expect(vote).toBeInstanceOf(Vote);
     });
 
     it('should throw an error if a value is empty', () => {
-        const user: User = new User('1', 'foo user', 'foo@test.com', '1234');
-        expect(() => new Vote(user, undefined, VotingOption.NO)).toThrow('Invalid input values');
+        const user: User = User.create('foo user', 'foo@test.com', '1234');
+        expect(() => Vote.create(user, undefined, VotingOption.NO)).toThrow('Invalid input values');
     });
 });

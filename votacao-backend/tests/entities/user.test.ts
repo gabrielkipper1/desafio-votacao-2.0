@@ -2,15 +2,15 @@ import { User } from '../../src/entities/user';
 
 describe('User Creation', () => {
     it('should create a new user', () => {
-        expect(new User('1', 'Foo User', 'foo@teste.com', '1234')).toBeInstanceOf(User);
+        expect(User.create("Foo user", "foo@test.com", "1234")).toBeInstanceOf(User);
     })
 
     it('should throw an error if a value is empty', () => {
-        expect(() => new User('', 'Foo User', 'foo@teste.com', '1234')).toThrow('Invalid input values');
+        expect(() => User.create("", "foo@test.com", "1234")).toThrow('Invalid input values');
     });
 
     it('should throw an error if a value is undefined', () => {
-        expect(() => new User('1', 'Foo User', 'foo@test.com', undefined)).toThrow('Invalid input values');
+        expect(() => User.create(undefined, "foo@test.com", "12345")).toThrow('Invalid input values');
     });
 
 });

@@ -1,21 +1,58 @@
 import { User } from "./user";
 import { Vote } from "./vote";
+import { VotingSession } from "./voting-session";
 
 export class VotingTopic {
-    title: string;
-    votes: Map<string, Vote>;
+    id: number | undefined;
+    description: string;
+    category: string;
+    votes: Map<number, Vote>;
+    sessions: VotingSession[];
 
-    constructor(title: string | undefined) {
-        if (!title) {
+    private constructor(id: number | undefined, title: string | undefined, category: string | undefined, sessions: VotingSession[] | undefined) {
+        if (!title || !category) {
             throw new Error('Invalid input values');
         }
 
-        this.title = title;
+        if (!sessions) {
+            sessions = [];
+        }
+
+        this.id = id;
+        this.description = title;
+        this.category = category;
         this.votes = new Map();
+        this.sessions = sessions;
+    }
+
+    static create(title: string | undefined, category: string | undefined): VotingTopic {
+        return new VotingTopic(undefined, title, category, undefined);
+    }
+
+    static existing(id: number | undefined, title: string | undefined, category: string | undefined, sessions: VotingSession[] | undefined): VotingTopic {
+        if (!id) throw new Error('Invalid topic Id');
+        return new VotingTopic(id, title, category, sessions);
     }
 
     addVote(vote: Vote) {
-        this.votes.set(vote.user.uid, vote);
+        if (!vote.user.id) {
+            throw new Error('Invalid user values');
+        }
+
+        if (this.votes.has(vote.user.id)) {
+            throw new Error('User cannot vote twice on same topic');
+        }
+
+        this.votes.set(vote.user.id, vote);
+    }
+
+    addSession(session: VotingSession) {
+        this.sessions.push(session);
+    }
+
+    createSession(durationInMinutes: number) {
+        const session = VotingSession.create(this, durationInMinutes);
+        this.addSession(session);
     }
 
 }
