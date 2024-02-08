@@ -12,7 +12,7 @@ export class VoteController {
         return this.repository.saveVote(vote);
     }
 
-    async getVoteByTopicId(vote_id: number): Promise<Vote[] | undefined> {
+    async getVotesByTopicId(vote_id: number): Promise<Vote[] | undefined> {
         return await this.repository.getVotesFromTopic(vote_id);
     }
 }
