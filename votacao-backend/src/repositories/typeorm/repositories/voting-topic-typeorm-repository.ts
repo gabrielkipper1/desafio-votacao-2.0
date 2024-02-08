@@ -5,8 +5,11 @@ import { VotingTopicSchema } from "../schemas/voting-topic-schema";
 import { VotingTopicRepository } from "../../interfaces/voting-topic-repository";
 
 export class VotingTopicTypeormRepository implements VotingTopicRepository {
+    repository: Repository<VotingTopic>;
 
-    repository: Repository<VotingTopic> = TypeORMDataSource.getRepository<VotingTopic>(VotingTopicSchema);
+    constructor(repository: Repository<VotingTopic>) {
+        this.repository = repository;
+    }
 
     async createVotingTopic(votingTopic: VotingTopic): Promise<VotingTopic> {
         return this.repository.save(votingTopic);
