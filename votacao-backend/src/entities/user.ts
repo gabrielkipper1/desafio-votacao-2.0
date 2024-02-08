@@ -1,8 +1,11 @@
+import { Vote } from "./vote";
+
 export class User {
     id: number | undefined;
     name: string;
     email: string;
     cpf: string;
+    votes: Vote[]
 
     private constructor(uid: number | undefined, name: string | undefined, email: string | undefined, cpf: string | undefined) {
         if (!name || !email || !cpf) {
@@ -13,6 +16,7 @@ export class User {
         this.name = name;
         this.email = email;
         this.cpf = cpf;
+        this.votes = [];
     }
 
     static create(name: string | undefined, email: string | undefined, cpf: string | undefined) {

@@ -34,4 +34,14 @@ describe('Voting Session Creation', () => {
         const votingSession = VotingSession.create(votingTopic, undefined);
         expect(votingSession.end_date).toEqual(new Date(votingSession.start_date.getTime() + 60000));
     })
+
+    it("create an active session", () => {
+        const votingSession = VotingSession.create(votingTopic, 10);
+        expect(votingSession.isActive()).toBe(true);
+    });
+
+    it("create an expired session", () => {
+        const votingSession = VotingSession.existing(1, votingTopic, new Date(Date.now() - 600000), new Date(Date.now() - 300000));
+        expect(votingSession.isActive()).toBe(false);
+    });
 });
