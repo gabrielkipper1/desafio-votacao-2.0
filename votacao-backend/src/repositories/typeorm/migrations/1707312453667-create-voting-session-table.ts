@@ -3,15 +3,16 @@ import { MigrationInterface, QueryRunner, Table } from "typeorm";
 export class CreateVotingSessionTable1707312453667 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
-        console.log("Creating voting session table");
         await queryRunner.createTable(new Table(
             {
-                name: "vote",
+                name: "session",
                 columns: [
                     {
                         name: "id",
-                        type: "serial",
+                        type: "integer",
                         isPrimary: true,
+                        isGenerated: true,
+                        generationStrategy: "increment",
                     },
                     {
                         name: "topic_id",
@@ -20,12 +21,12 @@ export class CreateVotingSessionTable1707312453667 implements MigrationInterface
                     },
                     {
                         name: "start_date",
-                        type: "timestamptz",
+                        type: "datetime",
                         isNullable: false,
                     },
                     {
                         name: "end_date",
-                        type: "timestamptz",
+                        type: "datetime",
                         isNullable: false,
                     },
                 ]

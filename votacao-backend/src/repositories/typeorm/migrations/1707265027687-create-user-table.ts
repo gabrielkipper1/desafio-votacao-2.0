@@ -4,15 +4,16 @@ import { User } from "../../../entities/user";
 export class CreateUserTable1707265027687 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
-        console.log("Creating user table");
         await queryRunner.createTable(new Table(
             {
                 name: "user",
                 columns: [
                     {
                         name: "id",
-                        type: "serial",
+                        type: "integer",
                         isPrimary: true,
+                        isGenerated: true,
+                        generationStrategy: "increment",
                     },
                     {
                         name: "name",
