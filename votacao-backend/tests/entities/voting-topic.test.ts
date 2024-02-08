@@ -59,4 +59,16 @@ describe('Voting Topic Creation', () => {
         topic.addVote(fooVote);
         expect(topic.votes.size).toBe(2);
     });
+
+    it('create a topic with and active session', () => {
+        const topic = VotingTopic.create("Foo Topic", "Foo category");
+        topic.createSession(10);
+        expect(topic.isActive()).toBe(true);
+    });
+
+    it('create a topic with an expired session', () => {
+        const topic = VotingTopic.create("Foo Topic", "Foo category");
+        topic.addSession(VotingSession.existing(1, topic, new Date(Date.now() - 600000), new Date(Date.now() - 300000)));
+        expect(topic.isActive()).toBe(false);
+    });
 });

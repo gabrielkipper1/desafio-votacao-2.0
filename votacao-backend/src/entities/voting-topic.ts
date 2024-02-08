@@ -55,4 +55,9 @@ export class VotingTopic {
         this.addSession(session);
     }
 
+    isActive(): boolean {
+        //check if has sessions and if start time and end time are in range compared to current time
+        return this.sessions.length > 0 && this.sessions.some(session => session.isActive());
+    }
+
 }

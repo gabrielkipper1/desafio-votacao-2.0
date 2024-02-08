@@ -28,4 +28,9 @@ export class VotingSession {
         if (!id) throw new Error('Invalid session Id');
         return new VotingSession(id, topic, start_date, end_date);
     }
+
+    isActive(): boolean {
+        const now = new Date();
+        return now >= this.start_date && now <= this.end_date;
+    }
 }
