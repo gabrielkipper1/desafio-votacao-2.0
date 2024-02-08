@@ -5,16 +5,16 @@ export const VotingTopicSchema = new EntitySchema<VotingTopic>({
     name: "topic",
     columns: {
         id: {
-            type: Number,
+            type: "int",
             primary: true,
-            generated: true
+            generated: "increment"
         },
         description: {
-            type: String,
+            type: "varchar",
             nullable: false
         },
         category: {
-            type: String,
+            type: "varchar",
             nullable: false
         },
     },
@@ -22,12 +22,14 @@ export const VotingTopicSchema = new EntitySchema<VotingTopic>({
         votes: {
             target: "vote",
             type: "one-to-many",
-            inverseSide: "topic"
+            inverseSide: "topic",
+            joinColumn: { name: "vote_id" }
         },
         sessions: {
             target: "session",
             type: "one-to-many",
-            inverseSide: "topic"
+            inverseSide: "topic",
+            joinColumn: { name: "session_id" }
         }
     }
 });

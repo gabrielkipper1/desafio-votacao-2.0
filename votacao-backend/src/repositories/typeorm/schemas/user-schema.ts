@@ -6,24 +6,30 @@ export const UserSchema = new EntitySchema<User>({
     name: 'user',
     columns: {
         id: {
-            type: String,
-            primary: true
+            type: "integer",
+            primary: true,
+            generated: "increment",
         },
         name: {
-            type: String
+            type: "varchar",
+            nullable: false,
         },
         email: {
-            type: String
+            type: "varchar",
+            nullable: false,
         },
         cpf: {
-            type: String
+            type: "varchar",
+            nullable: false,
         },
     },
+
     relations: {
         votes: {
             target: "vote",
             type: "one-to-many",
-            inverseSide: "user"
+            inverseSide: "user",
+            joinColumn: { name: "vote_id" },
         }
     }
 });

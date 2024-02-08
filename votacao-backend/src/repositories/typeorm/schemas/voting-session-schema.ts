@@ -7,20 +7,20 @@ export const VotingSessionSchema = new EntitySchema<VotingSession>({
         id: {
             type: "int",
             primary: true,
-            generated: true
+            generated: "increment",
         },
         start_date: {
-            type: "timestamptz"
+            type: "timestamp with time zone"
         },
         end_date: {
-            type: "timestamptz"
+            type: "timestamp with time zone"
         },
     },
     relations: {
         topic: {
             target: "topic",
             type: "many-to-one",
-            joinColumn: true,
+            joinColumn: { name: "topic_id" },
         }
     }
 });

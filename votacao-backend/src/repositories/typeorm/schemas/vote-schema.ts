@@ -9,7 +9,7 @@ export const VoteSchema = new EntitySchema<Vote>({
         id: {
             type: "int",
             primary: true,
-            generated: true
+            generated: "increment"
         },
         vote: {
             type: "varchar",
@@ -19,12 +19,13 @@ export const VoteSchema = new EntitySchema<Vote>({
         user: {
             target: "user",
             type: "many-to-one",
-            joinColumn: true,
+            joinColumn: { name: "user_id" },
+
         },
         topic: {
             target: "topic",
             type: "many-to-one",
-            joinColumn: true,
+            joinColumn: { name: "topic_id" },
         }
     }
 
