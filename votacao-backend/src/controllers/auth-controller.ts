@@ -64,7 +64,11 @@ export class AuthController {
             throw new Error("Invalid token");
         }
         const splitBearer = token.split(" ")[1];
-        return await this.tokenController.verifyToken(splitBearer);
+        const payload = await this.tokenController.verifyToken(splitBearer);
+        return {
+            "valid": true,
+            "user": payload.user
+        }
     }
 
 }
