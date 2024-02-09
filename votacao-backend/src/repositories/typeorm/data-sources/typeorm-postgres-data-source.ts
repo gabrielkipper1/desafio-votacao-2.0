@@ -11,6 +11,8 @@ import { VotingTopicSchema } from "../schemas/voting-topic-schema";
 import { VotingSessionSchema } from "../schemas/voting-session-schema";
 import { VoteSchema } from "../schemas/vote-schema";
 import { CreateDatabase1707349833140 } from "../migrations/1707349833140-create-database";
+import { CreateCredentialsTable1707487847662 } from "../migrations/1707487847662-create-credentials-table";
+import { UserPasswordSchema } from "../schemas/credential-schema";
 
 require('dotenv').config();
 
@@ -28,7 +30,8 @@ export const TypeORMDataSource = new DataSource({
         UserSchema,
         VotingTopicSchema,
         VotingSessionSchema,
-        VoteSchema
+        VoteSchema,
+        UserPasswordSchema
     ],
     subscribers: [],
     migrations: [
@@ -37,6 +40,7 @@ export const TypeORMDataSource = new DataSource({
         CreateVoteTable1707276296151,
         CreateVotingTopicTable1707276311154,
         CreateVotingSessionTable1707312453667,
+        CreateCredentialsTable1707487847662,
         CreateUserAdminTable1707315160933
     ],
 })
