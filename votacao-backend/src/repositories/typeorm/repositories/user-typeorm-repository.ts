@@ -10,6 +10,10 @@ export class UserTypeORMRepository implements UserRepository {
     constructor(repository: Repository<User>) {
         this.repository = repository;
     }
+    async getUserByEmail(email: string): Promise<User | undefined> {
+        const user = await this.repository.findOne({ where: { email: email } });
+        return user ? user : undefined;
+    }
 
     async getUserById(user_id: number): Promise<User | undefined> {
         const user: User | null = await this.repository.findOne({ where: { id: user_id } });
