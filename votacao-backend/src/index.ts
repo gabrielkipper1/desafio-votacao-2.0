@@ -18,6 +18,15 @@ import { VotingSession } from './entities/voting-session';
 import { VotingSessionSchema } from './repositories/typeorm/schemas/voting-session-schema';
 import { VotingSessionTypeormRepository } from './repositories/typeorm/repositories/voting-session-typeorm-repository';
 import { VotingSessionRoutes } from './routes/voting-session-routes';
+import { AuthRoutes } from './routes/auth-routes';
+import { AuthTypeORMRepository } from './repositories/typeorm/repositories/credentials-typeorm-repository';
+import { UserPassword } from './entities/user-password';
+import { UserPasswordSchema } from './repositories/typeorm/schemas/credential-schema';
+import { BCryptPasswordEncoder } from './data-parsers/credentials/bcrypt-password-encoder';
+import { JWTEncoder } from './data-parsers/credentials/jwt-encoder';
+import { TokenController } from './controllers/token-controller';
+import { UserController } from './controllers/user-controller';
+import { PasswordController } from './controllers/password-controller';
 
 const app = express();
 const database = new DatabaseInitializer();
@@ -30,6 +39,14 @@ app.use('/', UserRoutes(new UserTypeORMRepository(TypeORMDataSource.getRepositor
 app.use('/', VotingTopicRoutes(new VotingTopicTypeormRepository(TypeORMDataSource.getRepository<VotingTopic>(VotingTopicSchema))));
 app.use('/', VoteRoutes(new VoteTypeormRepository(TypeORMDataSource.getRepository<Vote>(VoteSchema))));
 app.use('/', VotingSessionRoutes(new VotingSessionTypeormRepository(TypeORMDataSource.getRepository<VotingSession>(VotingSessionSchema))));
+app.use('/', AuthRoutes(
+    new TokenController(new JWTEncoder()),
+    new UserController(new UserTypeORMRepository(TypeORMDataSource.getRepository<User>(UserSchema))),
+    new PasswordController(
+        new AuthTypeORMRepository(TypeORMDataSource.getRepository<UserPassword>(UserPasswordSchema)),
+        new BCryptPasswordEncoder()
+    ),
+));
 
 app.listen(port, () => {
     console.log(`[server]: Server is running at http://localhost:${port}`);
