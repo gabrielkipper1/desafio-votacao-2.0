@@ -13,7 +13,7 @@ export class MockVoteRepository implements VoteRepository {
         return this.votes.find(vote => vote.id === vote_id);
     }
 
-    async getVotesFromTopic(topicId: number): Promise<Vote[] | undefined> {
+    async getVotesFromTopic(topicId: number): Promise<Vote[]> {
         return this.votes.filter(vote => vote.topic.id === topicId);
     }
 }
