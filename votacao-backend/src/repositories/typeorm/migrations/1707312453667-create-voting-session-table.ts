@@ -21,12 +21,12 @@ export class CreateVotingSessionTable1707312453667 implements MigrationInterface
                     },
                     {
                         name: "start_date",
-                        type: "datetime",
+                        type: "timestamp with time zone",
                         isNullable: false,
                     },
                     {
                         name: "end_date",
-                        type: "datetime",
+                        type: "timestamp with time zone",
                         isNullable: false,
                     },
                 ]

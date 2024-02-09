@@ -1,6 +1,6 @@
 import { Repository } from "typeorm";
 import { User } from "../../../entities/user";
-import { TypeORMDataSource } from "../typeorm-postgres-data-source";
+import { TypeORMDataSource } from "../data-sources/typeorm-postgres-data-source";
 import { UserRepository } from "../../interfaces/user-repository";
 import { UserSchema } from "../schemas/user-schema";
 

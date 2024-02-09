@@ -1,6 +1,6 @@
 import { Repository } from "typeorm";
 import { VotingTopic } from "../../../entities/voting-topic";
-import { TypeORMDataSource } from "../typeorm-postgres-data-source";
+import { TypeORMDataSource } from "../data-sources/typeorm-postgres-data-source";
 import { VotingTopicSchema } from "../schemas/voting-topic-schema";
 import { VotingTopicRepository } from "../../interfaces/voting-topic-repository";
 
