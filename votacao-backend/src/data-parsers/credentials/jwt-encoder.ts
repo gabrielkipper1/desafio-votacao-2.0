@@ -5,8 +5,8 @@ import { User } from "../../entities/user";
 export class JWTEncoder<T> implements TokenEncoder {
     secret: string = "giwqopkropgaqwe";
 
-    async encode(payload: User): Promise<string> {
-        return jwt.sign({ "id": payload.id }, this.secret, { expiresIn: '1h' });
+    async encode(payload: object): Promise<string> {
+        return jwt.sign(payload, this.secret, { expiresIn: '1h' });
     }
 
     async validate(token: string): Promise<object> {
