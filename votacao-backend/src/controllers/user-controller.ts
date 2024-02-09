@@ -16,4 +16,8 @@ export class UserController {
         return await this.repository.getUserById(user_id);
     }
 
+    async getUserByEmail(email: string): Promise<User | undefined> {
+        return await this.repository.getUserByEmail(email);
+    }
+
 }
