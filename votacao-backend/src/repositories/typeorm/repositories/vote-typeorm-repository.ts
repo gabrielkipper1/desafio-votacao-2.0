@@ -1,4 +1,5 @@
 import { Vote } from "../../../entities/vote";
+import { VotingResult } from "../../../interfaces/voting-result";
 import { VoteRepository } from "../../interfaces/vote-repository";
 import { TypeORMDataSource } from "../data-sources/typeorm-postgres-data-source";
 import { VoteSchema } from "../schemas/vote-schema";
@@ -19,13 +20,12 @@ export class VoteTypeormRepository implements VoteRepository {
         return await this.repository.save(vote);
     }
 
-    async getVotesFromTopic(topicId: number) {
-        return await this.repository.find({
-            where: {
-                topic: {
-                    id: topicId
-                }
-            }
-        });
-    }
+    async getVotesFromTopic(topicId: number): Promise<VotingResult[]> {
+        const result = await this.repository.createQueryBuilder("vote").
+            select(["vote.vote as option", "count(vote.vote) as votes"]).
+            where("vote.topic_id = :topicId", { topicId: topicId }).
+            groupBy("vote.vote").
+            getRawMany();
+        return result as VotingResult[];
+    };
 }
