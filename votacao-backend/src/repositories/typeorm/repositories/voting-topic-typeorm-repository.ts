@@ -16,8 +16,7 @@ export class VotingTopicTypeormRepository implements VotingTopicRepository {
     }
 
     async getActiveVotingTopics(): Promise<VotingTopic[]> {
-        //return this.repository.find({ where: { : true } });
-        return [];
+        return this.repository.find();
     }
 
     async getVotingTopicById(id: number): Promise<VotingTopic | undefined> {

@@ -3,6 +3,7 @@ import { VotingSession } from "../../../entities/voting-session";
 import { TypeORMDataSource } from "../data-sources/typeorm-postgres-data-source";
 import { VotingSessionSchema } from "../schemas/voting-session-schema";
 import { VotingSessionRepository } from "../../interfaces/voting-session-repository";
+import { VotingSessionPostData } from "../../../interfaces/voting-session-post-data";
 
 export class VotingSessionTypeormRepository implements VotingSessionRepository {
     repository: Repository<VotingSession>;
@@ -10,6 +11,12 @@ export class VotingSessionTypeormRepository implements VotingSessionRepository {
     constructor(repository: Repository<VotingSession>) {
         this.repository = repository;
     }
+
+    async getVotingSessionByTopicId(topicId: number): Promise<VotingSession[]> {
+        const result = await this.repository.find({ where: { topic: { id: topicId } } });
+        return result;
+    }
+
     async getVotingSessionById(id: number): Promise<VotingSession | undefined> {
         const result = await this.repository.findOne({ where: { id: id } });
         if (result === null) return undefined;

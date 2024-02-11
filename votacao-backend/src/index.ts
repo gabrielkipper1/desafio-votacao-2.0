@@ -27,16 +27,21 @@ import { JWTEncoder } from './data-parsers/credentials/jwt-encoder';
 import { TokenController } from './controllers/token-controller';
 import { UserController } from './controllers/user-controller';
 import { PasswordController } from './controllers/password-controller';
+import cors from 'cors';
+import { VotingSessionController } from './controllers/voting-sessions-controller';
 
 const app = express();
 const database = new DatabaseInitializer();
 const port = process.env.PORT;
 
 database.initialize();
-
+app.use(cors())
 app.use(express.json());
 app.use('/', UserRoutes(new UserTypeORMRepository(TypeORMDataSource.getRepository<User>(UserSchema))));
-app.use('/', VotingTopicRoutes(new VotingTopicTypeormRepository(TypeORMDataSource.getRepository<VotingTopic>(VotingTopicSchema))));
+app.use('/', VotingTopicRoutes(
+    new VotingTopicTypeormRepository(TypeORMDataSource.getRepository<VotingTopic>(VotingTopicSchema)),
+    new VotingSessionController(new VotingSessionTypeormRepository(TypeORMDataSource.getRepository<VotingSession>(VotingSessionSchema))
+    )));
 app.use('/', VoteRoutes(new VoteTypeormRepository(TypeORMDataSource.getRepository<Vote>(VoteSchema))));
 app.use('/', VotingSessionRoutes(new VotingSessionTypeormRepository(TypeORMDataSource.getRepository<VotingSession>(VotingSessionSchema))));
 app.use('/', AuthRoutes(

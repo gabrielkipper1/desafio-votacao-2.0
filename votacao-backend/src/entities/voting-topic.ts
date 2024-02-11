@@ -4,16 +4,12 @@ import { VotingSession } from "./voting-session";
 
 export class VotingTopic {
     id: number | undefined;
-    description: string;
-    category: string;
+    description: string | undefined;
+    category: string | undefined;
     votes: Map<number, Vote>;
     sessions: VotingSession[];
 
     private constructor(id: number | undefined, title: string | undefined, category: string | undefined, sessions: VotingSession[] | undefined) {
-        if (!title || !category) {
-            throw new Error('Invalid input values');
-        }
-
         if (!sessions) {
             sessions = [];
         }
@@ -26,12 +22,25 @@ export class VotingTopic {
     }
 
     static create(title: string | undefined, category: string | undefined): VotingTopic {
+        if (!title || !category) {
+            throw new Error('Invalid input values');
+        }
         return new VotingTopic(undefined, title, category, undefined);
     }
 
     static existing(id: number | undefined, title: string | undefined, category: string | undefined, sessions: VotingSession[] | undefined): VotingTopic {
         if (!id) throw new Error('Invalid topic Id');
+
+        if (!title || !category) {
+            throw new Error('Invalid input values');
+        }
+
         return new VotingTopic(id, title, category, sessions);
+    }
+
+    static fromId(id: number | undefined): VotingTopic {
+        if (!id) throw new Error('Invalid topic Id');
+        return new VotingTopic(id, '', '', undefined);
     }
 
     addVote(vote: Vote) {
@@ -47,6 +56,9 @@ export class VotingTopic {
     }
 
     addSession(session: VotingSession) {
+        if (this.sessions === undefined) {
+            this.sessions = [];
+        }
         this.sessions.push(session);
     }
 
@@ -56,7 +68,6 @@ export class VotingTopic {
     }
 
     isActive(): boolean {
-        //check if has sessions and if start time and end time are in range compared to current time
         return this.sessions.length > 0 && this.sessions.some(session => session.isActive());
     }
 
