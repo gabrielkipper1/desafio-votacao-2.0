@@ -11,8 +11,9 @@ import { constants } from "node:buffer";
 import { UserController } from "../controllers/user-controller";
 import { PasswordController } from "../controllers/password-controller";
 import { TokenController } from "../controllers/token-controller";
+import { UserAdminController } from "../controllers/user-admin-controller";
 
-export const AuthRoutes = (tokenController: TokenController, userRepository: UserController, passwordController: PasswordController) => {
+export const AuthRoutes = (tokenController: TokenController, userRepository: UserController, passwordController: PasswordController, adminController: UserAdminController) => {
     const controller = new AuthController(passwordController, userRepository, tokenController);
     const router = Router();
 
@@ -32,6 +33,11 @@ export const AuthRoutes = (tokenController: TokenController, userRepository: Use
         const signUpResult = await controller.validate(req.headers.authorization);
         res.status(200).send(signUpResult);
     });
+
+    router.get('/admin/:userId', async (req, res) => {
+        const isAdmin = await adminController.isUserAdmin(Number(req.params.userId));
+        res.status(200).send(isAdmin);
+    })
 
     return router;
 };

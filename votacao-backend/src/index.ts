@@ -29,6 +29,10 @@ import { UserController } from './controllers/user-controller';
 import { PasswordController } from './controllers/password-controller';
 import cors from 'cors';
 import { VotingSessionController } from './controllers/voting-sessions-controller';
+import { UserAdminController } from './controllers/user-admin-controller';
+import { UserAdmin } from './entities/user-admin';
+import { AdminSchema } from './repositories/typeorm/schemas/admin-schema';
+import { UserAdminTypeOrmRepository } from './repositories/typeorm/repositories/user-admin-typeorm-repository';
 
 const app = express();
 const database = new DatabaseInitializer();
@@ -51,6 +55,7 @@ app.use('/', AuthRoutes(
         new AuthTypeORMRepository(TypeORMDataSource.getRepository<UserPassword>(UserPasswordSchema)),
         new BCryptPasswordEncoder()
     ),
+    new UserAdminController(new UserAdminTypeOrmRepository(TypeORMDataSource.getRepository<UserAdmin>(AdminSchema))),
 ));
 
 app.listen(port, () => {
