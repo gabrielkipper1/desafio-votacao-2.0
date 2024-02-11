@@ -3,6 +3,7 @@ import { VotingSessionJsonParser } from "../data-parsers/json/voting-session-jso
 import { VotingSessionController } from "../controllers/voting-sessions-controller";
 import { VotingSessionRepository } from "../repositories/interfaces/voting-session-repository";
 import { VotingSession } from "../entities/voting-session";
+import { VotingSessionPostData } from "../interfaces/voting-session-post-data";
 
 export const VotingSessionRoutes = (repository: VotingSessionRepository) => {
     const router = Router();
@@ -16,7 +17,7 @@ export const VotingSessionRoutes = (repository: VotingSessionRepository) => {
         });
     });
 
-    router.get('/session:id', async (req, res) => {
+    router.get('/session/:id', async (req, res) => {
         const votingSession = await controller.getVotingSessionById(Number(req.params.id));
         res.status(200).send({
             "voting_session": votingSession,
@@ -24,7 +25,7 @@ export const VotingSessionRoutes = (repository: VotingSessionRepository) => {
     });
 
     router.post('/session', async (req, res) => {
-        const votingSession = parser.parse(req.body);
+        const votingSession = req.body as VotingSessionPostData
         const createdVotingTopic = await controller.createVotingSession(votingSession);
 
         if (!createdVotingTopic) {
