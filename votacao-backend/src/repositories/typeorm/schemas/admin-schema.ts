@@ -4,7 +4,7 @@ import { Admin } from "typeorm";
 import { UserAdmin } from "../../../entities/user-admin";
 
 export const AdminSchema = new EntitySchema<UserAdmin>({
-    name: "credential",
+    name: "user_admin",
     columns: {
         active: {
             type: "boolean",
