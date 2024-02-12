@@ -1,0 +1,57 @@
+.background {
+    background-color: #f3f3f3;
+    height: 100%;
+    width: 100%;
+    align-items: start;
+    justify-content: center;
+    display: flex;
+
+}
+
+.form-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 25px;
+}
+
+.signup-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.form-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+}
+
+.mat-card {
+    max-width: 400px;
+    width: 100%;
+}
+
+.mat-card-header {
+    text-align: center;
+}
+
+.mat-card-actions {
+    justify-content: center;
+}
+
+.mat-error {
+    color: red;
+}
+
+.signup {
+    margin: 5px;
+}
+
+.go-back {
+    margin: 5px;
+}
