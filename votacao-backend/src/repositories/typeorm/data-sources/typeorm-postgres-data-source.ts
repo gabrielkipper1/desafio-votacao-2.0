@@ -13,6 +13,8 @@ import { VoteSchema } from "../schemas/vote-schema";
 import { CreateDatabase1707349833140 } from "../migrations/1707349833140-create-database";
 import { CreateCredentialsTable1707487847662 } from "../migrations/1707487847662-create-credentials-table";
 import { UserPasswordSchema } from "../schemas/credential-schema";
+import { UserAdmin } from "../../../entities/user-admin";
+import { AdminSchema } from "../schemas/admin-schema";
 
 require('dotenv').config();
 
@@ -31,11 +33,12 @@ export const TypeORMDataSource = new DataSource({
         VotingTopicSchema,
         VotingSessionSchema,
         VoteSchema,
-        UserPasswordSchema
+        UserPasswordSchema,
+        AdminSchema
     ],
     subscribers: [],
     migrations: [
-        CreateDatabase1707349833140,
+        // CreateDatabase1707349833140,
         CreateUserTable1707265027687,
         CreateVoteTable1707276296151,
         CreateVotingTopicTable1707276311154,
