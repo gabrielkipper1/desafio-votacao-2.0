@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import { DatabaseInitializer } from './settings/database-initializer';
 import { UserRoutes } from './routes/user-routes';
 import { VotingTopicRoutes } from './routes/voting-topic-routes';
@@ -33,14 +33,19 @@ import { UserAdminController } from './controllers/user-admin-controller';
 import { UserAdmin } from './entities/user-admin';
 import { AdminSchema } from './repositories/typeorm/schemas/admin-schema';
 import { UserAdminTypeOrmRepository } from './repositories/typeorm/repositories/user-admin-typeorm-repository';
+import "express-async-errors";
+import { errorHandler } from './middlewares/error-middleware';
 
 const app = express();
 const database = new DatabaseInitializer();
 const port = process.env.PORT;
 
 database.initialize();
+
 app.use(cors())
 app.use(express.json());
+
+
 app.use('/', UserRoutes(new UserTypeORMRepository(TypeORMDataSource.getRepository<User>(UserSchema))));
 app.use('/', VotingTopicRoutes(
     new VotingTopicTypeormRepository(TypeORMDataSource.getRepository<VotingTopic>(VotingTopicSchema)),
@@ -58,6 +63,7 @@ app.use('/', AuthRoutes(
     new UserAdminController(new UserAdminTypeOrmRepository(TypeORMDataSource.getRepository<UserAdmin>(AdminSchema))),
 ));
 
+app.use(errorHandler);
 app.listen(port, () => {
     console.log(`[server]: Server is running at http://localhost:${port}`);
 });
