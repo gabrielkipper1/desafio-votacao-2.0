@@ -7,16 +7,19 @@ import { UserRepository } from "../repositories/interfaces/user-repository";
 import { TokenController } from "./token-controller";
 import { PasswordController } from "./password-controller";
 import { UserController } from "./user-controller";
+import { UserAdminController } from "./user-admin-controller";
 
 export class AuthController {
     userRepository: UserController;
     passwordController: PasswordController;
     tokenController: TokenController;
+    userAdminContrller: UserAdminController;
 
-    constructor(passwordController: PasswordController, userRepository: UserController, tokenController: TokenController) {
+    constructor(passwordController: PasswordController, userRepository: UserController, tokenController: TokenController, userAdminContrller: UserAdminController) {
         this.passwordController = passwordController;
         this.userRepository = userRepository;
         this.tokenController = tokenController;
+        this.userAdminContrller = userAdminContrller;
     }
 
     async signIn(credentials: UserSignInCredentials): Promise<object> {
@@ -30,9 +33,12 @@ export class AuthController {
             throw new Error("Invalid password");
         }
 
+        const isAdmin = await this.userAdminContrller.isUserAdmin(validatedUser.id as number);
         const token = await this.tokenController.createToken(validatedUser);
 
         return {
+            "user": validatedUser,
+            "isAdmin": isAdmin,
             "token": token
         };
     }
@@ -53,22 +59,27 @@ export class AuthController {
             throw new Error("Error saving credentials");
         }
 
+        const isAdmin = await this.userAdminContrller.isUserAdmin(savedUser.id as number);
         const token = await this.tokenController.createToken(savedUser);
         return {
+            "user": savedUser,
+            "isAdmin": isAdmin,
             "token": token
         };
     }
 
     async validate(token: string | undefined): Promise<object> {
         if (!token) {
-            throw new Error("Invalid token");
+            throw new Error("token is empty");
         }
         const splitBearer = token.split(" ")[1];
         const payload = await this.tokenController.verifyToken(splitBearer);
+        const isAdmin = await this.userAdminContrller.isUserAdmin(payload.id);
         return {
-            "valid": true,
-            "user": payload.user
-        }
+            "user": payload,
+            "isAdmin": isAdmin,
+            "token": splitBearer
+        };
     }
 
 }
