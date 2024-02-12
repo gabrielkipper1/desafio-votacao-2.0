@@ -7,6 +7,8 @@ import { VotingOption } from "../entities/voting-options";
 import { VotingSessionController } from "../controllers/voting-sessions-controller";
 import { VotingSession } from "../entities/voting-session";
 import { listenerCount } from "process";
+import { VotingTopicPostData } from "../interfaces/voting-topic-post-data";
+import { TopicSearchData } from "../interfaces/topic-search-data";
 
 export const VotingTopicRoutes = (repository: VotingTopicRepository, sessionController: VotingSessionController) => {
     const router = Router();
@@ -14,14 +16,16 @@ export const VotingTopicRoutes = (repository: VotingTopicRepository, sessionCont
     const controller = new VotingTopicController(repository);
 
     router.get('/topic', async (req, res) => {
-        const votingTopics = await controller.getActiveVotingTopics();
+        const search = req.query as unknown as TopicSearchData;
+        const votingTopics = await controller.getActiveVotingTopics(search);
         res.status(200).send(
             votingTopics,
         );
     });
 
     router.get('/topic/all', async (req, res) => {
-        const votingTopics = await controller.getActiveVotingTopics();
+        const search = req.query as unknown as TopicSearchData;
+        const votingTopics = await controller.getActiveVotingTopics(search);
         res.status(200).send({
             votingTopics,
         });
@@ -63,7 +67,7 @@ export const VotingTopicRoutes = (repository: VotingTopicRepository, sessionCont
     })
 
     router.post('/topic', async (req, res) => {
-        const votingTopic = parser.parse(req.body);
+        const votingTopic = req.body as VotingTopicPostData;
         const createdVotingTopic = await controller.createVotingTopic(votingTopic);
 
         if (!createdVotingTopic) {
