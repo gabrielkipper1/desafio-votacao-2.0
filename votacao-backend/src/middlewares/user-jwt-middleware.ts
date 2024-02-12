@@ -20,6 +20,6 @@ export async function UserJWTMiddleware(req: Request, res: Response, next: NextF
     }
 
     req.body.user = decoded;
+    req.body.userId = decoded['user']['id']
     next();
-
 };
