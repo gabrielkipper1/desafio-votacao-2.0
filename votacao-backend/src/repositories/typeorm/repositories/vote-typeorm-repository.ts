@@ -12,6 +12,19 @@ export class VoteTypeormRepository implements VoteRepository {
         this.repository = repository;
     }
 
+    async hasUserVoted(topicId: number, userId: number): Promise<boolean> {
+        const vote = await this.repository.findOne(
+            {
+                where: {
+                    topic: { id: topicId },
+                    user: { id: userId }
+                }
+            }
+        );
+
+        return vote !== null;
+    }
+
     async getVoteById(voteId: number) {
         return await this.repository.findOne({ where: { id: voteId } });
     }

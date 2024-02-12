@@ -26,6 +26,7 @@ export const VotingTopicSchema = new EntitySchema<VotingTopic>({
             joinColumn: { name: "vote_id" }
         },
         sessions: {
+            cascade: ["insert"],
             target: "session",
             type: "one-to-many",
             inverseSide: "topic",
