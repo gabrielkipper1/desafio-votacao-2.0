@@ -3,12 +3,12 @@ import { VotingTopic } from "./voting-topic";
 
 export class VotingSession {
     id: number | undefined;
-    topic: VotingTopic;
+    topic: VotingTopic | undefined;
     start_date: Date;
     end_date: Date;
 
     private constructor(id: number | undefined, topic: VotingTopic | undefined, start_date: Date | undefined, end_date: Date | undefined) {
-        if (!topic || !start_date || !end_date) {
+        if (!start_date || !end_date) {
             throw new Error('Invalid input values');
         }
 
@@ -24,8 +24,14 @@ export class VotingSession {
         return new VotingSession(undefined, topic, startDate, endDate);
     }
 
+    static withoutTopic(durationInMinutes: number | undefined): VotingSession {
+        const startDate = new Date();
+        const endDate = new Date(startDate.getTime() + (durationInMinutes || 1) * 60000);
+        return new VotingSession(undefined, undefined, startDate, endDate);
+    }
+
     static existing(id: number | undefined, topic: VotingTopic | undefined, start_date: Date | undefined, end_date: Date | undefined): VotingSession {
-        if (!id) throw new Error('Invalid session Id');
+        if (!id || !topic) throw new Error('Invalid session Id');
         return new VotingSession(id, topic, start_date, end_date);
     }
 
