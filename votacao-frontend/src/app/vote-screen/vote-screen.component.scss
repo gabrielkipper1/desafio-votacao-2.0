@@ -1,0 +1,54 @@
+.background {
+    background-color: #f3f3f3;
+    height: 100%;
+    width: 100%;
+    align-items: start;
+    justify-content: center;
+    display: flex;
+}
+
+.root {
+    justify-content: center;
+    width: 100%;
+    max-width: 780px;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.header-div {
+    max-width: 780px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.content {
+    padding-top: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 780px;
+    width: 100%;
+    align-items: center;
+    display: flex;
+}
+
+.details-div {
+    max-width: 780px;
+    width: 100%;
+}
+
+.vote-div {
+    max-width: 780px;
+    width: 100%;
+
+}
+
+.header-div {
+    max-width: 780px;
+    width: 100%;
+}

@@ -1,0 +1,45 @@
+.buttons-div {
+    margin: 2px;
+    padding: 1px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.card-vote {
+    border-radius: 20px;
+    max-width: 780px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.2);
+}
+
+.vote-header {
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 1px;
+    margin-left: 1px;
+    padding: 0px;
+
+}
+
+.yes-button {
+    margin: 5px
+}
+
+.no-button {
+    margin: 5px
+}
+
+.snackbar-success {
+    background-color: #4CAF50;
+}
+
+.snackbar-error {
+    background-color: #f44336;
+}

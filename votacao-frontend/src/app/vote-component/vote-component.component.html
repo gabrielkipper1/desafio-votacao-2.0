@@ -1,0 +1,11 @@
+<div *ngIf="topic && topic.sessions">
+    <app-session-timer [session]="validSession"></app-session-timer>
+</div>
+
+<mat-card class="card-vote" *ngIf="validSession && topic && topic.sessions">
+    <p class="vote-header">Qual é o seu voto?</p>
+    <div class="buttons-div">
+        <button class="yes-button" mat-flat-button color="primary" (click)="vote('Yes')"> Sim </button>
+        <button class="no-button" mat-flat-button color="warn" (click)="vote('No')">Não</button>
+    </div>
+</mat-card>
