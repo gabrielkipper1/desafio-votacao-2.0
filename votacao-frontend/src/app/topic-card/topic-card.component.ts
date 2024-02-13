@@ -17,18 +17,13 @@ import { CommonModule } from '@angular/common';
 })
 export class TopicCardComponent {
   constructor(private router: Router, private dialog: Dialog) { }
-
   @Input() topic!: Topic;
 
   onDetailsButtonClick() {
-    console.log("Details button clicked");
-    console.log(this.topic.id);
     this.router.navigate(['/', "topic", this.topic.id]);
   }
 
   onVoteButtonClick() {
-    console.log("Vote button clicked");
-    console.log(this.topic.id);
     this.router.navigate(["vote/" + this.topic.id]);
   }
 

@@ -18,14 +18,11 @@ export class RouteService {
   }
 
   hasSavedRoute(): boolean {
-    console.log('Has saved route: ' + this.savedRoute);
-    console.log(this.savedRoute !== undefined && this.savedRoute !== '')
     return this.savedRoute !== undefined && this.savedRoute !== '';
   }
 
   navigateToSavedRoute() {
     localStorage.setItem('savedRoute', '');
-    console.log('Navigating to saved route: ' + this.savedRoute);
     return this.savedRoute;
   }
 }

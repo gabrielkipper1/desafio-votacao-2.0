@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { SignInData } from '../../interfaces/auth/sign-in-data';
 import { SignUpData } from '../../interfaces/auth/sign-up-data';
-import { Observable, Subscription, map } from 'rxjs';
+import { Observable, Subscription, catchError, map, of } from 'rxjs';
 import { UserTokenData } from '../../interfaces/auth/user-token-data';
 import { TokenService } from '../token-service/token.service';
 import { JsonPipe } from '@angular/common';
@@ -47,9 +47,12 @@ export class AuthService {
 
   updateUserInfo(): Observable<boolean> {
     if (this.userToken === undefined) {
-      return new Observable<boolean>(observer => {
-        observer.next(true);
-      });
+      return this.validate(this.tokenService.getToken()?.token as string).pipe(
+        catchError(error => {
+          this.signOut();
+          return of(true);
+        }),
+      );
     }
 
     return this.http.post<UserTokenData>('http://localhost:3000/validate', { token: this.userToken.token }).
@@ -83,7 +86,7 @@ export class AuthService {
   }
 
   getToken(): UserTokenData | undefined {
-    if (this.userToken !== undefined) {
+    if (this.tokenService.getToken() !== undefined) {
       return this.userToken;
     }
 

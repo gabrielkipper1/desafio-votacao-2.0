@@ -6,6 +6,23 @@
     align-items: center;
 }
 
+.button-list {
+    margin: 3px;
+    padding: 4px;
+    display: flex;
+    flex-direction: row;
+}
+
+.button-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.text-under {
+    text-align: center;
+}
+
 .content {
     margin-bottom: 30px;
     width: 100%;
