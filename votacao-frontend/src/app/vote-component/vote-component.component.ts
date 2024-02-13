@@ -9,23 +9,29 @@ import { VoteService } from '../services/vote-service/vote.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Session } from '../interfaces/session';
+import { Router } from '@angular/router';
+import { showSuccessSnackBar } from '../helper-functions/show-snack-bar';
+import { MatInput, MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-vote-component',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, SessionTimerComponent, MatCardModule, HttpClientModule, MatSnackBarModule],
+  imports: [MatInputModule, MatFormFieldModule, FormsModule, CommonModule, MatButtonModule, SessionTimerComponent, MatCardModule, HttpClientModule, MatSnackBarModule, MatInputModule],
   providers: [VoteService, HttpClient],
   templateUrl: './vote-component.component.html',
   styleUrl: './vote-component.component.scss'
 })
 export class VoteComponentComponent {
-  @Input() topic!: Topic;
-  @Input() validSession!: Session;
+  @Input({ required: true }) topic!: Topic;
+  validSession!: Session;
+  cpf!: string;
 
-  constructor(private voteService: VoteService, private snackBar: MatSnackBar) { }
+  constructor(private voteService: VoteService, private router: Router, private snackBar: MatSnackBar) { }
 
   ngOnInit() {
-    if (this.topic != undefined && this.topic.sessions !== undefined) {
+    if (this.topic !== undefined && this.topic.sessions !== undefined) {
       this.getValidSession();
     }
   }
@@ -42,31 +48,14 @@ export class VoteComponentComponent {
 
   vote(votingOption: string) {
     const vote: VotingOption = VotingOption[votingOption as keyof typeof VotingOption];
-    this.voteService.vote({ topicId: this.topic.id, vote: vote, }).subscribe(
+    this.voteService.vote({ topicId: this.topic.id, vote: vote, cpf: this.cpf }).subscribe(
       {
-        next: () => {
-          this.showMessage();
-        },
-        error: (error) => {
-          this.showError(error.error);
-        }
+        next: () => showSuccessSnackBar("Voto computado com sucesso!", this.snackBar),
       }
     )
   }
 
-  showMessage() {
-    this.snackBar.open('Voto realizado com sucesso!', 'Fechar', {
-      duration: 2000,
-      verticalPosition: 'top',
-      horizontalPosition: 'right',
-    });
-  }
-
-  showError(errorMessage: string) {
-    this.snackBar.open(`Erro: ${errorMessage}`, 'Fechar', {
-      duration: 2000,
-      verticalPosition: 'top',
-      horizontalPosition: 'right',
-    });
+  goToTopicPage() {
+    this.router.navigate(['/', "topic", this.topic.id]);
   }
 }

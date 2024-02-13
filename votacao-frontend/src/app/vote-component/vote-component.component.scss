@@ -19,12 +19,38 @@
     box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.2);
 }
 
+.info-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+
+}
+
+
 .vote-header {
     font-size: 20px;
     font-weight: 500;
     margin-bottom: 1px;
     margin-left: 1px;
     padding: 0px;
+
+}
+
+.valid-session-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
 
 }
 
