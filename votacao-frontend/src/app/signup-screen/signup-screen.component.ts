@@ -8,6 +8,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth-service/auth.service';
+import { showErrorSnackBar } from '../helper-functions/show-snack-bar';
+import { isEmailValid } from '../helper-functions/email-validator';
 
 @Component({
   selector: 'app-signup-screen',
@@ -26,22 +28,16 @@ export class SignupScreenComponent {
   constructor(private router: Router, private snackbar: MatSnackBar, private authService: AuthService) { }
 
   signup() {
+    if (!this.validate()) {
+      return;
+    }
 
-    this.authService.signUp({
-      cpf: this.cpf,
-      email: this.email,
-      name: this.nome,
-      password: this.password,
-    }).subscribe(
+    this.authService.signUp({ cpf: this.cpf, email: this.email, name: this.nome, password: this.password, }).subscribe(
       {
         next: () => this.goToHome(),
-        error: (err) => this.showErrorMessage(err.error),
+        error: (err) => showErrorSnackBar(err.error, this.snackbar),
       }
     );
-  }
-
-  showErrorMessage(message: string) {
-    this.snackbar.open(message, undefined, { duration: 3000, verticalPosition: 'top', horizontalPosition: 'right' })
   }
 
   goToHome() {
@@ -50,5 +46,28 @@ export class SignupScreenComponent {
 
   goBack() {
     this.router.navigate(['/', 'login']);
+  }
+
+  onEnterKey() {
+    this.signup();
+  }
+
+  validate(): boolean {
+    if (!isEmailValid(this.email)) {
+      showErrorSnackBar('Digite um email válido', this.snackbar);
+      return false;
+    }
+
+    if (this.nome === '' || this.email === '' || this.cpf === '' || this.password === '' || this.confirmPassword === '') {
+      showErrorSnackBar('Preencha todos os campos', this.snackbar);
+      return false;
+    }
+
+    if (this.password !== this.confirmPassword) {
+      showErrorSnackBar('As senhas não coincidem', this.snackbar);
+      return false;
+    }
+
+    return true;
   }
 }
