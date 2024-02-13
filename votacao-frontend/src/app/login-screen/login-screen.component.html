@@ -1,0 +1,24 @@
+<div class="background">
+    <form class="login-form" #loginForm="ngForm">
+        <mat-card class="card">
+            <mat-card-header class="header">
+                <mat-card-title>Login</mat-card-title>
+            </mat-card-header>
+            <div class="fields">
+                <mat-form-field class="email">
+                    <input matInput placeholder="Email" name="email" [(ngModel)]="email" required>
+                    <mat-error *ngIf="loginForm.controls['email']?.invalid"></mat-error>
+                </mat-form-field>
+                <mat-form-field class="password">
+                    <input matInput type="password" placeholder="Password" name="password" [(ngModel)]="password"
+                        required>
+                    <mat-error *ngIf="loginForm.controls['password']?.invalid"></mat-error>
+                </mat-form-field>
+            </div>
+            <mat-card-actions class="buttons">
+                <button class="login" mat-raised-button color="warn" (click)="signup()">Cadastrar</button>
+                <button class="signup" mat-raised-button color="primary" (click)="login()">Entrar</button>
+            </mat-card-actions>
+        </mat-card>
+    </form>
+</div>

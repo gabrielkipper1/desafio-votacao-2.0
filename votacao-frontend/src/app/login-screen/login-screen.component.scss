@@ -1,0 +1,56 @@
+.background {
+    background-color: #f3f3f3;
+    height: 100%;
+    width: 100%;
+    align-items: start;
+    justify-content: center;
+    display: flex;
+}
+
+.login-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.fields {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+}
+
+.login {
+    margin: 5px;
+}
+
+.signup {
+    margin: 5px;
+
+}
+
+.card {
+    padding: 20px
+}
+
+.mat-card-header {
+    text-align: center;
+}
+
+.mat-card-actions {
+    justify-content: center;
+}
+
+.mat-error {
+    color: red;
+}
