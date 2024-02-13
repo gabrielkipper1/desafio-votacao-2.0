@@ -1,0 +1,28 @@
+<div class="background">
+    <div class="content">
+        <div class="header">
+            <div>
+                <h1 class="title mat-display-2">Pautas</h1>
+            </div>
+            <div>
+                <button *ngIf="canCreateTopic" class="button-add" mat-mini-fab color="primary"
+                    (click)="onCreateNewTopicClicked()">
+                    <mat-icon>add</mat-icon>
+                </button>
+                <button class="button-signout" mat-mini-fab color="warn" (click)="signOut()">
+                    <mat-icon>logout</mat-icon>
+                </button>
+            </div>
+        </div>
+        <div class="field-div">
+            <mat-form-field class="field-form">
+                <input matInput placeholder="Buscar por categoria" [(ngModel)]="searchTerm" (ngModelChange)="update()">
+            </mat-form-field>
+        </div>
+        <div class="columns">
+            <div *ngFor="let topic of topics$ | async">
+                <app-topic-card [topic]="topic"></app-topic-card>
+            </div>
+        </div>
+    </div>
+</div>

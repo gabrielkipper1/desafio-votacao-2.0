@@ -1,0 +1,60 @@
+.background {
+    background-color: #f5f5f5;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.content {
+    margin-bottom: 30px;
+    width: 100%;
+    max-width: 780px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.header {
+    width: 100%;
+    max-width: 780px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.button-add {
+    margin: 3px;
+    padding: 4px;
+}
+
+.button-signout {
+    margin: 3px;
+    padding: 4px;
+}
+
+
+.field-div {
+    max-width: 780px;
+    width: 100%;
+}
+
+.field-form {
+    width: 100%;
+}
+
+.my-btn {
+    margin: 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.columns {
+    width: 100%;
+    max-width: 780px;
+}
