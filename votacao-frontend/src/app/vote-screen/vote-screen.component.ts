@@ -17,6 +17,7 @@ import { VoteComponentComponent } from '../vote-component/vote-component.compone
 import { TopicDetailComponent } from '../topic-detail-component/topic-detail.component';
 import { AuthService } from '../services/auth-service/auth.service';
 import { MatIconModule } from '@angular/material/icon';
+import { Observable, Subject, catchError, map, of, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'app-vote-screen',
@@ -31,7 +32,8 @@ import { MatIconModule } from '@angular/material/icon';
   providers: [TopicService, SessionService, HttpClient]
 })
 export class VoteScreenComponent {
-  topic!: Topic
+  topic$!: Observable<Topic>;
+  sessionActive!: boolean;
 
   constructor(
     private activedRoute: ActivatedRoute,
@@ -40,18 +42,22 @@ export class VoteScreenComponent {
 
   ngOnInit() {
     const topicId = Number(this.activedRoute.snapshot.paramMap.get('topicId'));
-    this.topicService.getTopicAndSessions(topicId).subscribe((top: Topic) => {
-      this.topic = top;
-      console.log('Topic', this.topic);
-    });
+    this.topic$ = this.topicService.getTopicAndSessions(topicId).pipe(
+      catchError((err) => { return of(err) }),
+      map((topic) => {
+        this.isSessionActive(topic);
+        return topic;
+      })
+    );
+
   }
 
   goToHome() {
-    this.router.navigate(['/', 'home']);
+    this.router.navigate(['home']);
   }
 
-  isSessionActive() {
-    return this.topic.sessions.filter(session => session.end_date > new Date()).length > 0;
+  isSessionActive(topic: Topic) {
+    this.sessionActive = topic.sessions.filter(session => session.end_date > new Date()).length > 0;
   }
 
   onVoteButtonClick() {

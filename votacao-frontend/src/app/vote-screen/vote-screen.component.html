@@ -1,8 +1,4 @@
-<div *ngIf="topic === undefined">
-    <app-loading message="Buscando Pauta"></app-loading>
-</div>
-
-<div *ngIf="topic !== undefined" class="background">
+<div class="background">
     <div class="root">
         <div class="content">
             <div class="header-div">
@@ -11,12 +7,19 @@
                     <mat-icon>home</mat-icon>
                 </button>
             </div>
-            <div class="details-div">
-                <app-topic-detail [topic]="topic"></app-topic-detail>
-            </div>
-            <div class="vote-div">
-                <app-vote-component [topic]="topic"></app-vote-component>
+            <div class="div-content" *ngIf="(topic$|async) as topic">
+                <div class="details-div">
+                    <app-topic-detail [topic]="topic"></app-topic-detail>
+                </div>
+                <div class="vote-div">
+                    <app-vote-component [topic]="topic"></app-vote-component>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<ng-template #loading>
+    <app-loading message="Carregando Pautas"></app-loading>
+
+</ng-template>
