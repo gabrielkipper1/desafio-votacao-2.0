@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -23,31 +23,30 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   providers: [TokenService, HttpClient, RouteService]
 })
 export class LoginScreenComponent {
+  loginForm: FormGroup;
   email!: string;
   password!: string;
-  token!: Observer<UserTokenData>;
 
   constructor(
     private router: Router,
     private authService: AuthService,
-    private tokenService: TokenService,
     private routeService: RouteService,
-    private snackbar: MatSnackBar
-  ) { }
-
-  ngOnInit() { }
+    private snackbar: MatSnackBar,
+    private formBuilder: FormBuilder,
+  ) {
+    this.loginForm = formBuilder.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required]
+    })
+  }
 
   login() {
-    console.log("login with email: " + this.email + " and password: " + this.password);
     this.authService.signIn({ email: this.email, password: this.password }).subscribe({
       next: (value: UserTokenData) => {
-        console.log('SIGN IN token data', value);
         this.onSignUp(value);
       },
       error: (err) => {
-        this.snackbar.open(
-          err.error, undefined, { duration: 3000, verticalPosition: 'top', horizontalPosition: 'right' }
-        )
+        this.showErrorMessage(err.error);
       },
     })
   }
@@ -62,9 +61,22 @@ export class LoginScreenComponent {
     this.router.navigate(['/', 'home']);
   }
 
+  onEnterKey() {
+    this.login();
+  }
 
   signup() {
     this.router.navigate(['/', 'signup']);
+  }
+
+  showErrorMessage(message: any) {
+    if (typeof message !== 'string') {
+      message = "Erro Desconhecido!";
+    }
+
+    this.snackbar.open(
+      message, undefined, { duration: 3000, verticalPosition: 'top', horizontalPosition: 'right' }
+    )
   }
 }
 
