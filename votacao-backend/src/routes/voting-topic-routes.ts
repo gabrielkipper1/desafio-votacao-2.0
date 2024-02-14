@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { VotingTopicJsonParser } from "../data-parsers/json/voting-topic-json-parser";
 import { VotingTopicController } from "../controllers/voting-topic-controller";
 import { VotingTopic } from "../entities/voting-topic";
 import { VotingTopicRepository } from "../repositories/interfaces/voting-topic-repository";
@@ -12,7 +11,6 @@ import { TopicSearchData } from "../interfaces/topic-search-data";
 
 export const VotingTopicRoutes = (repository: VotingTopicRepository, sessionController: VotingSessionController) => {
     const router = Router();
-    const parser = new VotingTopicJsonParser();
     const controller = new VotingTopicController(repository);
 
     router.get('/topic', async (req, res) => {

@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { VotingSessionJsonParser } from "../data-parsers/json/voting-session-json";
 import { VotingSessionController } from "../controllers/voting-sessions-controller";
 import { VotingSessionRepository } from "../repositories/interfaces/voting-session-repository";
 import { VotingSession } from "../entities/voting-session";
@@ -7,7 +6,6 @@ import { VotingSessionPostData } from "../interfaces/voting-session-post-data";
 
 export const VotingSessionRoutes = (repository: VotingSessionRepository) => {
     const router = Router();
-    const parser = new VotingSessionJsonParser();
     const controller = new VotingSessionController(repository);
 
     router.get('/session', async (req, res) => {
