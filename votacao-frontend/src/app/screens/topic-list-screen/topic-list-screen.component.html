@@ -24,7 +24,7 @@
                         </div>
                     </div>
                     <div *ngIf="!isSignedIn" class="button-text">
-                        <button class="button-signin" mat-mini-fab color="primary" (click)="signOut()">
+                        <button class="button-signin" mat-mini-fab color="primary" (click)="signIn()">
                             <mat-icon>login</mat-icon>
                         </button>
                         <div class="text-under">
@@ -43,22 +43,22 @@
             <!-- list of topics -->
             <div class="columns">
                 <ng-container *ngIf="(topics$|async) as topics; else loading">
-                    <div *ngFor="let topic of topics">
-                        <app-topic-card [topic]="topic"></app-topic-card>
+                    <div class="topic-list" *ngFor="let topic of topics">
+                        <app-topic-card class="topic-card" [topic]="topic"></app-topic-card>
                     </div>
-                    <div *ngIf="topics.length === 0">
+                    <div class="no-topics" *ngIf="topics.length === 0">
                         <p>Nenhuma pauta encontrada</p>
                     </div>
                 </ng-container>
 
                 <!-- Erro -->
-                <div *ngIf="errorMessage">
-                    <p>{{errorMessage}}</p>
+                <div class="error-message" *ngIf="errorMessage">
+                    <p class="error-message-text">{{errorMessage}}</p>
                 </div>
 
                 <!-- loading spinner -->
                 <ng-template #loading>
-                    <app-loading message="Carregando Pautas"></app-loading>
+                    <app-loading class="loading" message="Carregando Pautas"></app-loading>
                 </ng-template>
             </div>
         </div>
