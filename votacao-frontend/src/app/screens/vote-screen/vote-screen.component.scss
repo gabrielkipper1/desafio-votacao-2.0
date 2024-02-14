@@ -7,7 +7,7 @@
     display: flex;
 }
 
-.div-content {
+.topic-content {
     max-width: 780px;
     width: 100%;
     display: flex;
@@ -26,7 +26,7 @@
     flex-direction: column;
 }
 
-.header-div {
+.header {
     max-width: 780px;
     width: 100%;
     display: flex;
@@ -47,18 +47,13 @@
     display: flex;
 }
 
-.details-div {
+.details {
     margin-top: 10px;
     max-width: 780px;
     width: 100%;
 }
 
-.vote-div {
-    max-width: 780px;
-    width: 100%;
-}
-
-.header-div {
+.vote {
     max-width: 780px;
     width: 100%;
 }

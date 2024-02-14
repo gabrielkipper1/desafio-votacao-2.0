@@ -37,6 +37,7 @@ import { getErrorMessage } from '../../helper-functions/get-error-message';
 export class VoteScreenComponent {
   topic$!: Observable<Topic>;
   sessionActive!: boolean;
+  errorMessage: string | undefined = undefined;
 
   constructor(
     private activedRoute: ActivatedRoute,
@@ -48,7 +49,7 @@ export class VoteScreenComponent {
     const topicId = Number(this.activedRoute.snapshot.paramMap.get('topicId'));
     this.topic$ = this.topicService.getTopicAndSessions(topicId).pipe(
       catchError((err) => {
-        showErrorSnackBar(getErrorMessage(err), this.snackBar);
+        this.onError(err);
         return of(err)
       }),
       map((topic) => {
@@ -56,6 +57,11 @@ export class VoteScreenComponent {
         return topic;
       })
     );
+  }
+
+  onError(err: Error) {
+    this.errorMessage = getErrorMessage(err);
+    showErrorSnackBar(getErrorMessage(err), this.snackBar);
   }
 
   goToHome() {

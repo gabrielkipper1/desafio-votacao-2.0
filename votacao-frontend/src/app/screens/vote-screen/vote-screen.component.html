@@ -1,8 +1,9 @@
 <div class="background">
     <div class="root">
         <div class="content">
-            <div class="header-div">
-                <h1 class="header">Votação</h1>
+            <!-- header tittle and home button -->
+            <div class="header">
+                <h1 class="header-text">Votação</h1>
                 <div>
                     <button class="button-home" mat-mini-fab color="primary" (click)="goToHome()">
                         <mat-icon>home</mat-icon>
@@ -12,19 +13,25 @@
                     </div>
                 </div>
             </div>
-            <div class="div-content" *ngIf="(topic$|async) as topic">
-                <div class="details-div">
+            <!-- detail and vote components -->
+            <div class="topic-content" *ngIf="(topic$|async) as topic; else loading">
+                <div class="details">
                     <app-topic-detail [topic]="topic"></app-topic-detail>
                 </div>
-                <div class="vote-div">
+                <div class="vote">
                     <app-vote-component [topic]="topic"></app-vote-component>
                 </div>
+            </div>
+            <!-- error message -->
+            <div class="error-message" *ngIf="errorMessage">
+                <p>{{errorMessage}}</p>
             </div>
         </div>
     </div>
 </div>
 
+<!-- loading spinner -->
 <ng-template #loading>
-    <app-loading message="Carregando Pautas"></app-loading>
+    <app-loading class="loading" message="Carregando Pautas"></app-loading>
 
 </ng-template>
