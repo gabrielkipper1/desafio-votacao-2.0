@@ -14,6 +14,8 @@ export function showErrorSnackBar(message: any, snackBar: MatSnackBar) {
 
 export function showSuccessSnackBar(message: string, snackBar: MatSnackBar) {
     snackBar.open(message, undefined, {
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
         duration: 3000,
     });
 }
