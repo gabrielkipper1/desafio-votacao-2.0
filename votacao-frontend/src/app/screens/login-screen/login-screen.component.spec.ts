@@ -33,22 +33,22 @@ describe('LoginScreenComponent', () => {
 
   it("should have email and password inputs", () => {
     const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('input[formControlName="email"]')).toBeTruthy();
-    expect(compiled.querySelector('input[formControlName="password"]')).toBeTruthy();
+    expect(compiled.querySelector('input[type="email"]')).toBeTruthy();
+    expect(compiled.querySelector('input[type="password"]')).toBeTruthy();
   })
 
-  // it('should call sign up method when button is clicked', () => {
-  //   spyOn(component, 'signup');
-  //   const button = fixture.debugElement.nativeElement.querySelector('.signup');
-  //   button.click();
-  //   expect(component.signup).toHaveBeenCalled();
-  // })
+  it('should call sign up method when button is clicked', () => {
+    spyOn(component, 'signup');
+    const button = fixture.debugElement.nativeElement.querySelector('.signup');
+    button.click();
+    expect(component.signup).toHaveBeenCalled();
+  })
 
-  // it('should call login when button is pressed', () => {
-  //   spyOn(component, 'login');
-  //   const button = fixture.debugElement.nativeElement.querySelector('.login');
-  //   button.click();
-  //   expect(component.login).toHaveBeenCalled();
-  // })
+  it('should call login when button is pressed', () => {
+    spyOn(component, 'login');
+    const button = fixture.debugElement.nativeElement.querySelector('.login');
+    button.click();
+    expect(component.login).toHaveBeenCalled();
+  })
 
 });
