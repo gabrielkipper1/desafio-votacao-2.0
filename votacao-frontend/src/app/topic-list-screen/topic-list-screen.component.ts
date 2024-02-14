@@ -13,7 +13,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { Observable } from 'rxjs';
+import { Observable, catchError, ignoreElements, of } from 'rxjs';
+import { LoadingComponent } from '../loading-component/loading.component';
+import { UserTokenData } from '../interfaces/auth/user-token-data';
 @Component({
   selector: 'app-topic-list-screen',
   standalone: true,
@@ -21,29 +23,43 @@ import { Observable } from 'rxjs';
     TopicCardComponent, MatCardModule, MatInputModule,
     HttpClientModule, CommonModule, TopicCardComponent,
     MatButtonModule, MatIconModule, FormsModule, MatInputModule,
-    MatFormFieldModule],
+    MatFormFieldModule, LoadingComponent],
   templateUrl: './topic-list-screen.component.html',
   styleUrl: './topic-list-screen.component.scss',
   providers: [TopicService, HttpClient]
 })
 export class TopicListScreenComponent {
+  user$!: Observable<UserTokenData>;
   topics$!: Observable<Topic[]>;
   searchTerm: string = '';
+  errorMessage: string | undefined = undefined;
   canCreateTopic: boolean = false;
+  isSignedIn: boolean = false;
 
   constructor(private router: Router, private topicService: TopicService, private auth: AuthService) { }
 
   ngOnInit() {
-    this.topics$ = this.topicService.getActiveTopics({
-      category: ""
-    });
+    this.topics$ = this.topicService.getActiveTopics({ category: "" }).pipe(
+      catchError((err) => {
+        console.log("erro catch")
+        this.setErrorMessage(err.error);
+        return of(err);
+      })
+    );
+
     this.checkForAdmin();
   }
 
   private checkForAdmin() {
     const token = this.auth.getToken();
-    if (token !== null) {
+
+    if (token !== null && token !== undefined) {
+      this.isSignedIn = true;
       this.canCreateTopic = token?.isAdmin || false;
+    }
+    else {
+      this.isSignedIn = false;
+      this.canCreateTopic = false;
     }
   }
 
@@ -51,7 +67,6 @@ export class TopicListScreenComponent {
     this.topics$ = this.topicService.getActiveTopics({
       category: this.searchTerm
     });
-
   }
 
   onCreateNewTopicClicked() {
@@ -61,6 +76,13 @@ export class TopicListScreenComponent {
   signOut() {
     this.auth.signOut();
     this.router.navigate(['/', 'login']);
+  }
+
+  setErrorMessage(message: any) {
+    if (message === undefined || 'string' !== typeof message) {
+      message = 'Erro desconhecido';
+    }
+    this.errorMessage = message;
   }
 
 }
