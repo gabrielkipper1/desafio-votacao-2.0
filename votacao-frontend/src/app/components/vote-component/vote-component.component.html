@@ -1,5 +1,5 @@
 <div *ngIf="validSession">
-    <app-session-timer [session]="validSession!"></app-session-timer>
+    <app-session-timer class="timer" [session]="validSession!"></app-session-timer>
 </div>
 
 <mat-card class="card-vote">
@@ -12,8 +12,8 @@
             </div>
         </div>
     </div>
-    <div *ngIf="!validSession">
-        <p>Não é possível votar! Esta sessão já foi finalizada.</p>
+    <div class="session-ended" *ngIf="!validSession">
+        <p class="session-ended-text"> Não é possível votar! Esta sessão já foi finalizada.</p>
     </div>
     <div class="info-text">
         <p>Para ver detalhes sobre a pauta e sobre a votação, clique no botão abaixo</p>
