@@ -10,8 +10,8 @@ describe('LoadingComponent', () => {
     await TestBed.configureTestingModule({
       imports: [LoadingComponent]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(LoadingComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -19,5 +19,15 @@ describe('LoadingComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it("should have a loading spinner", () => {
+    const compiled = fixture.nativeElement;
+    expect(compiled.querySelector('.loading-spinner')).toBeTruthy();
+  });
+
+  it("should have a loading text", () => {
+    const compiled = fixture.nativeElement;
+    expect(compiled.querySelector('.loading-message')).toBeTruthy();
   });
 });
