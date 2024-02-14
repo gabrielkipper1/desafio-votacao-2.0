@@ -1,0 +1,28 @@
+<mat-card class="card">
+    <div>
+        <div class="header-line">
+            <mat-card-header class="card-header">Resultado Da Votação</mat-card-header>
+        </div>
+    </div>
+    <div class="results-div" *ngIf="(votes$ | async) as votes">
+        <div class="result-line" *ngFor="let vote of votes">
+            <app-vote-result-line [count]="vote.votes" [option]="vote.option" [total]="totalVotes"
+                [showBar]="true"></app-vote-result-line>
+        </div>
+        <div class="result-total">
+            <app-vote-result-line [count]="totalVotes" option="total" [total]="totalVotes"
+                [showBar]="false"></app-vote-result-line>
+        </div>
+    </div>
+
+    <div *ngIf="!isActive">
+        <h3>
+            Opção vencedora: {{winnerDisplayText}}
+        </h3>
+    </div>
+    <div *ngIf="isActive">
+        <h3>
+            Opção vencedora até o momento: {{winnerDisplayText}}
+        </h3>
+    </div>
+</mat-card>

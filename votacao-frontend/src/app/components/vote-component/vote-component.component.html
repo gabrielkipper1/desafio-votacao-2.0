@@ -1,0 +1,23 @@
+<div *ngIf="validSession">
+    <app-session-timer [session]="validSession!"></app-session-timer>
+</div>
+
+<mat-card class="card-vote">
+    <div *ngIf="validSession" class="valid-session-div">
+        <div class="vote-options">
+            <p class="vote-header">Qual é o seu voto?</p>
+            <div class="buttons-div">
+                <button class="yes-button" mat-flat-button color="primary" (click)="confirmVote('Yes')"> Sim </button>
+                <button class="no-button" mat-flat-button color="warn" (click)="confirmVote('No')">Não</button>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="!validSession">
+        <p>Não é possível votar! Esta sessão já foi finalizada.</p>
+    </div>
+    <div class="info-text">
+        <p>Para ver detalhes sobre a pauta e sobre a votação, clique no botão abaixo</p>
+        <button class="details-button" mat-flat-button color="primary" (click)="goToTopicPage()">Ver
+            detalhes</button>
+    </div>
+</mat-card>

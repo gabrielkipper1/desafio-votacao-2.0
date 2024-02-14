@@ -5,28 +5,28 @@ import { Topic } from '../../interfaces/topic';
 import { TopicPostData } from '../../interfaces/topic-post-data';
 import { TopicSearchData } from '../../interfaces/topic-search-data';
 import { InterfaceToQuery } from '../helpers/interface-to-query-params';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TopicService {
 
-  endpoint = 'http://localhost:3000';
   constructor(private http: HttpClient) { }
 
   getActiveTopics(search: TopicSearchData): Observable<Topic[]> {
-    return this.http.get<Topic[]>(`${this.endpoint}/topic`, { params: InterfaceToQuery(search) });
+    return this.http.get<Topic[]>(environment.host + environment.topic, { params: InterfaceToQuery(search) });
   }
 
   getTopic(id: number): Observable<Topic> {
-    return this.http.get<Topic>(`${this.endpoint}/topic/${id}`);
+    return this.http.get<Topic>(environment.host + environment.topicById(id));
   }
 
   getTopicAndSessions(id: number): Observable<Topic> {
-    return this.http.get<Topic>(`${this.endpoint}/topic/${id}/session`);
+    return this.http.get<Topic>(environment.host + environment.topicByIdWithSession(id));
   }
 
   createTopic(topic: TopicPostData) {
-    return this.http.post(`${this.endpoint}/topic`, topic);
+    return this.http.post(environment.host + environment.topic, topic);
   }
 }

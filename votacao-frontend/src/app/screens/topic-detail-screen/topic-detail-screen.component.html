@@ -1,0 +1,37 @@
+<div *ngIf="(topic$ |async) as topic" class="blackground">
+    <div *ngIf="errorMessage===undefined && (topic === undefined)">
+        <app-loading message="Buscando Pauta"></app-loading>
+        <p>search</p>
+    </div>
+
+    <div class="background">
+        <div class="content">
+            <div class="header">
+                <h1>Detalhes da Pauta</h1>
+                <div>
+                    <button class="button-signout" mat-mini-fab color="primary" (click)="gotoHome()">
+                        <mat-icon>home</mat-icon>
+                    </button>
+                    <div class="text-under">
+                        Voltar
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="topic">
+                <div>
+                    <app-topic-detail [topic]="topic"></app-topic-detail>
+                </div>
+                <div>
+                    <app-session-timer [session]="topic.sessions[0]"></app-session-timer>
+                </div>
+                <div>
+                    <app-voting-result [topic]="topic"></app-voting-result>
+                </div>
+            </div>
+            <div *ngIf="errorMessage">
+                <p>error</p>
+                <p>{{errorMessage}}</p>
+            </div>
+        </div>
+    </div>
+</div>

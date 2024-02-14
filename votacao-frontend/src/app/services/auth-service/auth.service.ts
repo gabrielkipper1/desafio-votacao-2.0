@@ -7,6 +7,7 @@ import { UserTokenData } from '../../interfaces/auth/user-token-data';
 import { TokenService } from '../token-service/token.service';
 import { JsonPipe } from '@angular/common';
 import { SubscriptSizing } from '@angular/material/form-field';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -19,14 +20,15 @@ export class AuthService {
   }
 
   signIn(signInData: SignInData): Observable<UserTokenData> {
-    return this.http.post<UserTokenData>('http://localhost:3000/signin', signInData).pipe(map(data => {
+    return this.http.post<UserTokenData>(environment.host + environment.signIn, signInData).pipe(map(data => {
+      console.log("signin data", data)
       this.saveToken(data);
       return data;
     }));
   }
 
   signUp(signUpData: SignUpData) {
-    return this.http.post('http://localhost:3000/signup', signUpData).pipe(map(data => {
+    return this.http.post(environment.host + environment.signUp, signUpData).pipe(map(data => {
       this.saveToken(data as UserTokenData);
       return data;
     }));
@@ -34,11 +36,10 @@ export class AuthService {
 
   validate(userToken: string): Observable<boolean> {
     if (this.tokenService === undefined) {
-      return new Observable<boolean>(observer => {
-        observer.next(false);
-      })
+      return of(false);
     }
-    return this.http.post<UserTokenData>('http://localhost:3000/validate', { token: userToken }).
+
+    return this.http.post<UserTokenData>(environment.host + environment.validate, { token: userToken }).
       pipe(map(data => {
         this.saveToken(data);
         return true;
@@ -46,20 +47,12 @@ export class AuthService {
   }
 
   updateUserInfo(): Observable<boolean> {
-    if (this.userToken === undefined) {
-      return this.validate(this.tokenService.getToken()?.token as string).pipe(
-        catchError(error => {
-          this.signOut();
-          return of(true);
-        }),
-      );
+    const token = this.getToken();
+    if (token === undefined) {
+      return of(true);
     }
 
-    return this.http.post<UserTokenData>('http://localhost:3000/validate', { token: this.userToken.token }).
-      pipe(map(data => {
-        this.saveToken(data);
-        return true;
-      }));
+    return this.validate(token.token);
   }
 
   isLoggedIn(): Observable<boolean> {
@@ -68,14 +61,11 @@ export class AuthService {
         return data !== undefined;
       }));
     }
-
-    return new Observable<boolean>(observer => {
-      observer.next(false);
-    });
-
+    return of(false);
   }
 
   saveToken(tokenData: UserTokenData) {
+    console.log("save token from auth service", tokenData);
     this.userToken = tokenData;
     this.tokenService.saveToken(tokenData);
   }
@@ -86,6 +76,7 @@ export class AuthService {
   }
 
   getToken(): UserTokenData | undefined {
+    console.log("get token from auth service");
     if (this.tokenService.getToken() !== undefined) {
       return this.userToken;
     }

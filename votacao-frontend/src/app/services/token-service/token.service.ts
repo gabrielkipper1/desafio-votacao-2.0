@@ -23,10 +23,12 @@ export class TokenService {
   }
 
   saveToken(userToken: UserTokenData) {
+    console.log("saving token", userToken);
     localStorage.setItem('user-token', JSON.stringify(userToken));
   }
 
   loadToken(): UserTokenData | undefined {
+    console.log("load token from auth service");
     if (this.userToken === undefined) {
       const token = localStorage.getItem('user-token');
 
