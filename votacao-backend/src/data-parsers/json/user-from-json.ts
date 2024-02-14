@@ -1,14 +1,13 @@
 import { User } from "../../entities/user";
+import { BadRequestError } from "../../exceptions/bad-request-error";
+import { ERROR_MESSAGES } from "../../exceptions/erro-messages";
 import { DataParser } from "../data-parser";
 import { objectToMap } from "../map/map-parser";
 
 export class UserJsonParser implements DataParser<User> {
     parse(data: any): User {
-        console.log("UserJsonParser.parse", data);
-        console.log("UserJsonParser.parse", typeof data);
-
         if (!data) {
-            throw new Error("Empty user data");
+            throw new BadRequestError(ERROR_MESSAGES.USER_INVALID_DATA);
         }
 
         if (typeof data === 'object' && data !== null) {
@@ -20,7 +19,7 @@ export class UserJsonParser implements DataParser<User> {
         }
 
         if (!(data instanceof Map)) {
-            throw new Error("Invalid data");
+            throw new BadRequestError(ERROR_MESSAGES.USER_INVALID_DATA);
         }
 
         if (data.get('id') !== undefined) {

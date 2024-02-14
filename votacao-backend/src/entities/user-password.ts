@@ -1,3 +1,5 @@
+import { BadRequestError } from "../exceptions/bad-request-error";
+import { ERROR_MESSAGES } from "../exceptions/erro-messages";
 import { User } from "./user";
 
 export class UserPassword {
@@ -6,7 +8,7 @@ export class UserPassword {
 
     private constructor(user: number | undefined, password: string) {
         if (!user || !password) {
-            throw new Error("Invalid user or password");
+            throw new BadRequestError(ERROR_MESSAGES.INVALID_DATA);
         }
         this.userId = user;
         this.password = password;

@@ -16,4 +16,8 @@ export class MockUserRepository implements UserRepository {
     async getUserByEmail(email: string): Promise<User | undefined> {
         return this.users.find(user => user.email === email);
     }
+
+    async getUserByCpf(cpf: string): Promise<User | undefined> {
+        return this.users.find(user => user.cpf === cpf);
+    }
 }

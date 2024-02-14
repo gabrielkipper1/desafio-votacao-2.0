@@ -23,4 +23,9 @@ export class UserTypeORMRepository implements UserRepository {
     async saveUser(user: User): Promise<User | undefined> {
         return await this.repository.save(user);
     }
+
+    async getUserByCpf(cpf: string): Promise<User | undefined> {
+        const user = await this.repository.findOne({ where: { cpf: cpf } });
+        return user ? user : undefined;
+    }
 }

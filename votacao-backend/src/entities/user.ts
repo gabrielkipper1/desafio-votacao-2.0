@@ -1,3 +1,5 @@
+import { BadRequestError } from "../exceptions/bad-request-error";
+import { ERROR_MESSAGES } from "../exceptions/erro-messages";
 import { Vote } from "./vote";
 
 export class User {
@@ -17,23 +19,24 @@ export class User {
 
     static create(name: string | undefined, email: string | undefined, cpf: string | undefined) {
         if (!name || !email || !cpf) {
-            throw new Error('Invalid input values');
+            throw new BadRequestError(ERROR_MESSAGES.INVALID_DATA);
         }
         return new User(undefined, name, email, cpf);
     }
 
     static existing(uid: number | undefined, name: string | undefined, email: string | undefined, cpf: string | undefined) {
-        if (!uid) throw new Error('Invalid user Id');
+        if (!uid) throw new BadRequestError(ERROR_MESSAGES.INVALID_USER_ID);
 
         if (!name || !email || !cpf) {
-            throw new Error('Invalid input values');
+            throw new BadRequestError(ERROR_MESSAGES.INVALID_DATA);
         }
 
         return new User(uid, name, email, cpf);
     }
 
     static fromId(id: number | undefined) {
-        if (!id) throw new Error('Invalid user Id');
+        if (!id) throw new BadRequestError(ERROR_MESSAGES.INVALID_USER_ID);
+
         return new User(id, '', '', '');
     }
 

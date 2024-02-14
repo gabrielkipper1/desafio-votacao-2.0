@@ -1,5 +1,7 @@
 import { TokenEncoder } from "../interfaces/token-encoder";
 import { User } from "../entities/user";
+import { BadRequestError } from "../exceptions/bad-request-error";
+import { ERROR_MESSAGES } from "../exceptions/erro-messages";
 
 export class TokenController {
     tokenEncoder: TokenEncoder;
@@ -9,6 +11,8 @@ export class TokenController {
     }
 
     async createToken(user: User): Promise<string> {
+        if (!user) throw new BadRequestError(ERROR_MESSAGES.USER_INVALID_DATA)
+
         const payload = {
             "user": {
                 "id": user.id,
@@ -22,10 +26,12 @@ export class TokenController {
     }
 
     async decodeToken(token: string): Promise<any> {
+        if (!token) throw new BadRequestError(ERROR_MESSAGES.INVALID_TOKEN)
         return this.tokenEncoder.validate(token);
     }
 
     async verifyToken(token: string): Promise<any> {
+        if (!token) throw new BadRequestError(ERROR_MESSAGES.INVALID_TOKEN)
         return this.tokenEncoder.validate(token);
     }
 }

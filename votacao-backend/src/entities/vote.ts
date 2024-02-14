@@ -1,3 +1,5 @@
+import { BadRequestError } from "../exceptions/bad-request-error";
+import { ERROR_MESSAGES } from "../exceptions/erro-messages";
 import { User } from "./user";
 import { VotingOption } from "./voting-options";
 import { VotingTopic } from "./voting-topic";
@@ -10,7 +12,7 @@ export class Vote {
 
     private constructor(id: number | undefined, user: User | undefined, topic: VotingTopic | undefined, vote: VotingOption | undefined) {
         if (!user || !topic || !vote) {
-            throw new Error('Invalid input values');
+            throw new BadRequestError(ERROR_MESSAGES.USER_INVALID_DATA);
         }
 
         this.id = id;
@@ -24,7 +26,7 @@ export class Vote {
     }
 
     static existing(id: number | undefined, user: User | undefined, topic: VotingTopic | undefined, vote: VotingOption | undefined): Vote {
-        if (!id) throw new Error('Invalid vote Id');
+        if (!id) throw new BadRequestError(ERROR_MESSAGES.INVALID_USER_ID);
         return new Vote(id, user, topic, vote);
     }
 }

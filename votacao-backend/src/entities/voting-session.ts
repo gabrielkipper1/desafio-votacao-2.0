@@ -1,5 +1,7 @@
 import { start } from "repl";
 import { VotingTopic } from "./voting-topic";
+import { BadRequestError } from "../exceptions/bad-request-error";
+import { ERROR_MESSAGES } from "../exceptions/erro-messages";
 
 export class VotingSession {
     id: number | undefined;
@@ -9,7 +11,7 @@ export class VotingSession {
 
     private constructor(id: number | undefined, topic: VotingTopic | undefined, start_date: Date | undefined, end_date: Date | undefined) {
         if (!start_date || !end_date) {
-            throw new Error('Invalid input values');
+            throw new BadRequestError(ERROR_MESSAGES.INVALID_DATA);;
         }
 
         this.id = id;
@@ -19,6 +21,7 @@ export class VotingSession {
     }
 
     static create(topic: VotingTopic | undefined, durationInMinutes: number | undefined): VotingSession {
+        if (!topic) throw new BadRequestError(ERROR_MESSAGES.INVALID_DATA);
         const startDate = new Date();
         const endDate = new Date(startDate.getTime() + (durationInMinutes || 1) * 60000);
         return new VotingSession(undefined, topic, startDate, endDate);
@@ -31,7 +34,7 @@ export class VotingSession {
     }
 
     static existing(id: number | undefined, topic: VotingTopic | undefined, start_date: Date | undefined, end_date: Date | undefined): VotingSession {
-        if (!id || !topic) throw new Error('Invalid session Id');
+        if (!id || !topic) throw new BadRequestError(ERROR_MESSAGES.INVALID_DATA);
         return new VotingSession(id, topic, start_date, end_date);
     }
 

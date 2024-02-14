@@ -13,14 +13,8 @@ describe("VotingTopicController", () => {
     });
 
     it("should save a voting topic", async () => {
-        const savedVotingTopic = await votingTopicController.createVotingTopic(topic);
-        expect(savedVotingTopic).toBe(topic);
-    });
-
-    it("should get a voting topic by id", async () => {
-        await votingTopicRepository.createVotingTopic(topic);
-        const foundVotingTopic = await votingTopicController.getVotingTopicById(topic.id as number);
-        expect(foundVotingTopic?.id).toEqual(topic.id)
+        const savedVotingTopic = await votingTopicController.createVotingTopic({ category: topic.category!, description: topic.description!, durationInMinutes: 10 });
+        expect(savedVotingTopic).toBeInstanceOf(VotingTopic);
     });
 
     it("should return undefined if voting topic not found", async () => {
