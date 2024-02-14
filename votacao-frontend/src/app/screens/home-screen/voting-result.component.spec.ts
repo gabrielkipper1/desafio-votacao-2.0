@@ -12,6 +12,8 @@ describe('VotingResultComponent', () => {
     { option: "no", votes: 2 },
   ]
 
+  const total: VotingResult = { option: "total", votes: 3 }
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [VotingResultComponent]
@@ -40,6 +42,7 @@ describe('VotingResultComponent', () => {
   it("should have a list of votes", () => {
     const compiled = fixture.nativeElement;
     component.votes$ = of(votingResults);
+    component.calculateTotalVotes(votingResults);
     fixture.detectChanges();
     expect(compiled.querySelector('.result-line')).toBeTruthy();
   });
@@ -47,6 +50,7 @@ describe('VotingResultComponent', () => {
   it("should have the correct number of result items", () => {
     const compiled = fixture.nativeElement;
     component.votes$ = of(votingResults);
+    component.calculateTotalVotes(votingResults);
     fixture.detectChanges();
 
     expect(compiled.querySelectorAll('.result-line').length).toBe(2);
@@ -59,7 +63,7 @@ describe('VotingResultComponent', () => {
     fixture.detectChanges();
 
     expect(compiled.querySelector('.result-total')).toBeTruthy();
-    expect(component.totalVotes).toBe(3);
+    expect(component.total?.votes).toBe(3);
   });
 
   it("should have the winner text if session is finished. temporary winner must be hidden", () => {
@@ -77,6 +81,7 @@ describe('VotingResultComponent', () => {
     const compiled = fixture.nativeElement;
     component.topic = { category: "test", description: "test", id: 1, sessions: [{ end_date: new Date(Date.now() + 6000000), start_date: new Date(Date.now() - 6000000) }] }
     component.votes$ = of(votingResults);
+    component.getWinner(votingResults);
     component.calculateTotalVotes(votingResults);
     component.setActiveSession();
     fixture.detectChanges();

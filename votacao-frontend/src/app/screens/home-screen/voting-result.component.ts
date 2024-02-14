@@ -21,7 +21,8 @@ import { LoadingComponent } from '../../components/loading-component/loading.com
 export class VotingResultComponent {
   @Input({ required: true }) topic!: Topic;
   votes$!: Observable<VotingResult[]>;
-  totalVotes!: number;
+  total!: VotingResult;
+
   isActive = false;
   winner: VotingResult | undefined;
   winnerDisplayText: string = "";
@@ -51,7 +52,8 @@ export class VotingResultComponent {
   }
 
   calculateTotalVotes(votes: VotingResult[]) {
-    this.totalVotes = votes.reduce((acc, vote) => acc + Number(vote.votes), 0);
+    const total = votes.reduce((acc, vote) => acc + Number(vote.votes), 0);
+    this.total = { option: "total", votes: total };
   }
 
   getWinner(votes: VotingResult[]) {

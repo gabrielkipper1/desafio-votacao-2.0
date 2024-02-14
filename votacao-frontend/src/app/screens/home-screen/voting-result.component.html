@@ -7,13 +7,12 @@
     <div class="results-div" *ngIf="(votes$ | async) as votes; else loading">
         <!-- list vote options and result -->
         <div class="result-line" *ngFor="let vote of votes">
-            <app-vote-result-line [count]="vote.votes" [option]="vote.option" [total]="totalVotes"
-                [showBar]="true"></app-vote-result-line>
+            <app-vote-result-line [result]="vote" [total]="total.votes || 0" [showBar]="true"></app-vote-result-line>
         </div>
 
         <!-- total votes -->
         <div class="result-total">
-            <app-vote-result-line [count]="totalVotes" option="total" [total]="totalVotes"
+            <app-vote-result-line [result]="total" [showBar]="false" [total]="total.votes"
                 [showBar]="false"></app-vote-result-line>
         </div>
 
