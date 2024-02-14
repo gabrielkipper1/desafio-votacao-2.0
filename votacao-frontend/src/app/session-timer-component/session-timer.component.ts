@@ -19,6 +19,7 @@ export class SessionTimerComponent {
   remainingTime!: number;
 
   ngOnInit(): void {
+
     if (this.session === undefined) {
       this.remainingTime = 0;
       return;
@@ -39,7 +40,9 @@ export class SessionTimerComponent {
   }
 
   ngOnDestroy(): void {
-    this.timerSubscription.unsubscribe();
+    if (this.timerSubscription !== undefined) {
+      this.timerSubscription.unsubscribe();
+    }
   }
 
   calculateRemainingTime(): void {
