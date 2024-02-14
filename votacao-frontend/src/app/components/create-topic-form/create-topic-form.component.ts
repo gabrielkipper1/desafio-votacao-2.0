@@ -55,14 +55,14 @@ export class CreateTopicFormComponent {
 
   success() {
     showSuccessSnackBar('Pauta criada com sucesso', this.snackbar);
-    this.gotoHome();
+    this.goToHome();
   }
 
   error(error: Error) {
     showErrorSnackBar(getErrorMessage(error), this.snackbar);
   }
 
-  gotoHome() {
+  goToHome() {
     this.router.navigate(['/home']);
   }
 } 
