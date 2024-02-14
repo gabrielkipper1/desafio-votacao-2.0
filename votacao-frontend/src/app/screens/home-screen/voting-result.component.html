@@ -1,28 +1,41 @@
 <mat-card class="card">
-    <div>
-        <div class="header-line">
-            <mat-card-header class="card-header">Resultado Da Votação</mat-card-header>
-        </div>
+    <!-- header -->
+    <div class="header-line">
+        <mat-card-header class="card-header">Resultado Da Votação</mat-card-header>
     </div>
-    <div class="results-div" *ngIf="(votes$ | async) as votes">
+    <!-- voting result -->
+    <div class="results-div" *ngIf="(votes$ | async) as votes; else loading">
+        <!-- list vote options and result -->
         <div class="result-line" *ngFor="let vote of votes">
             <app-vote-result-line [count]="vote.votes" [option]="vote.option" [total]="totalVotes"
                 [showBar]="true"></app-vote-result-line>
         </div>
+
+        <!-- total votes -->
         <div class="result-total">
             <app-vote-result-line [count]="totalVotes" option="total" [total]="totalVotes"
                 [showBar]="false"></app-vote-result-line>
         </div>
+
+        <!-- winner -->
+        <div class="winner" *ngIf="!isActive">
+            <h3> Opção vencedora: {{winnerDisplayText}} </h3>
+        </div>
+
+        <!-- temporary winner -->
+        <div class="temp-winner" *ngIf="isActive">
+            <h3>Opção vencedora até o momento: {{winnerDisplayText}}</h3>
+        </div>
     </div>
 
-    <div *ngIf="!isActive">
-        <h3>
-            Opção vencedora: {{winnerDisplayText}}
-        </h3>
+    <!-- error message -->
+    <div class="error-message" *ngIf="errorMessage">
+        <p>{{errorMessage}}</p>
     </div>
-    <div *ngIf="isActive">
-        <h3>
-            Opção vencedora até o momento: {{winnerDisplayText}}
-        </h3>
-    </div>
+
+    <!-- loading spinner -->
+    <ng-template #loading>
+        <app-loading class="loading" message="Carregando votos"></app-loading>
+    </ng-template>
+
 </mat-card>
