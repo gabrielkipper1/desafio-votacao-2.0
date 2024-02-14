@@ -14,7 +14,7 @@ import { TokenController } from "../controllers/token-controller";
 import { UserAdminController } from "../controllers/user-admin-controller";
 
 export const AuthRoutes = (tokenController: TokenController, userRepository: UserController, passwordController: PasswordController, adminController: UserAdminController) => {
-    const controller = new AuthController(passwordController, userRepository, tokenController);
+    const controller = new AuthController(passwordController, userRepository, tokenController, adminController);
     const router = Router();
 
     router.post('/signin', async (req, res) => {

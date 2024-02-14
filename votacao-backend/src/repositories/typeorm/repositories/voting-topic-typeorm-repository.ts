@@ -1,8 +1,9 @@
-import { Repository } from "typeorm";
+import { ILike, MoreThan, Repository } from "typeorm";
 import { VotingTopic } from "../../../entities/voting-topic";
 import { TypeORMDataSource } from "../data-sources/typeorm-postgres-data-source";
 import { VotingTopicSchema } from "../schemas/voting-topic-schema";
 import { VotingTopicRepository } from "../../interfaces/voting-topic-repository";
+import { TopicSearchData } from "../../../interfaces/topic-search-data";
 
 export class VotingTopicTypeormRepository implements VotingTopicRepository {
     repository: Repository<VotingTopic>;
@@ -15,8 +16,17 @@ export class VotingTopicTypeormRepository implements VotingTopicRepository {
         return this.repository.save(votingTopic);
     }
 
-    async getActiveVotingTopics(): Promise<VotingTopic[]> {
-        return this.repository.find();
+    async getActiveVotingTopics(search: TopicSearchData): Promise<VotingTopic[]> {
+        return this.repository.find(
+            {
+                where: {
+                    category: ILike(`%${search.category}%`),
+                    sessions: {
+                        end_date: MoreThan(new Date())
+                    }
+                }
+            }
+        );
     }
 
     async getVotingTopicById(id: number): Promise<VotingTopic | undefined> {

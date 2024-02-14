@@ -6,10 +6,12 @@ votaoca-backend/.vscode
 
 votacao-frontend/.env
 votacao-backend/.env
+votacao-backend/coverage
 
 votacao-backend/dist
 votacao-frontend/dist
 
+votacao-frontend/.angular
 votacao-frontend/tmp
 votacao-frontend/out-tsc
 votacao-frontend/bazel-out
