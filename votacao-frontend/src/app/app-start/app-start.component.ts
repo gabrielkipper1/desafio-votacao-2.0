@@ -25,7 +25,7 @@ export class AppStartComponent {
     const userToken = this.auth.getToken();
 
     if (!userToken) {
-      this.goToLogin();
+      this.goToHome();
       return;
     }
 
@@ -42,11 +42,7 @@ export class AppStartComponent {
 
   clearInvalidToken() {
     this.auth.signOut();
-    this.goToLogin();
-  }
-
-  goToLogin() {
-    this.router.navigate(['/', 'login']);
+    this.goToHome();
   }
 
   goToHome() {
