@@ -1,0 +1,61 @@
+<div class="background">
+    <div class="topic-div">
+        <form [formGroup]="topicForm" class="topic-form">
+            <div>
+                <div class="header">
+                    <h2>Nova Pauta</h2>
+                    <div class="button-text">
+                        <button class="button-home" mat-mini-fab color="primary" (click)="gotoHome()">
+                            <mat-icon>home</mat-icon>
+                        </button>
+                        <div class="text-under">
+                            Voltar
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <mat-card>
+                        <mat-form-field class="mat-form-field">
+                            <input matInput placeholder="Descrição" formControlName="description">
+                        </mat-form-field>
+
+                        <mat-form-field class="mat-form-field">
+                            <input matInput placeholder="Categoria" formControlName="category">
+                        </mat-form-field>
+
+                        <mat-form-field class="mat-form-field">
+                            <input matInput type="number" placeholder="Duração" formControlName="duration">
+                            <mat-hint align="end">Tempo em minutos</mat-hint>
+                        </mat-form-field>
+                        <button class="create-button" mat-raised-button color="primary"
+                            (click)="createTopic()">Criar</button>
+                    </mat-card>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<!-- <div class="topic-div">
+    <form class="topic-form">
+        <div>
+            <h2>Nova Pauta</h2>
+            <div>
+                <mat-form-field class="mat-form-field">
+                    <input matInput placeholder="Descrição" [(ngModel)]="description" name="description">
+                </mat-form-field>
+
+                <mat-form-field class="mat-form-field">
+                    <input matInput placeholder="Categoria" [(ngModel)]="category" name="category">
+                </mat-form-field>
+
+                <mat-form-field class="mat-form-field">
+                    <input matInput type="number" placeholder="Duração" [(ngModel)]="duration" name="duration" min="0">
+                    <mat-hint align="end">Tempo em minutos</mat-hint>
+                </mat-form-field>
+            </div>
+        </div>
+        <button class="create-button" mat-raised-button color="primary" (click)="createTopic()">Criar</button>
+    </form>
+</div> -->

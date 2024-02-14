@@ -1,0 +1,51 @@
+.background {
+    background-color: #f3f3f3;
+    height: 100%;
+    width: 100%;
+    align-items: start;
+    justify-content: center;
+    display: flex;
+}
+
+.card {
+    width: 100%;
+    max-width: 450px;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.2);
+}
+
+.login-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    max-width: 450px;
+}
+
+.fields {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.header {
+    justify-content: center;
+    text-align: center;
+}
+
+.buttons {
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+}
+
+mat-form-field {
+    width: 100%;
+}
+
+button {
+    margin: 5px;
+}
