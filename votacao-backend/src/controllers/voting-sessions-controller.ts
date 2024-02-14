@@ -6,6 +6,8 @@ import { VotingSessionRepository } from "../repositories/interfaces/voting-sessi
 import { VotingSessionPostData } from "../interfaces/voting-session-post-data";
 import { VotingTopicController } from "./voting-topic-controller";
 import { VotingTopic } from "../entities/voting-topic";
+import { BadRequestError } from "../exceptions/bad-request-error";
+import { ERROR_MESSAGES } from "../exceptions/erro-messages";
 
 export class VotingSessionController {
     repository: VotingSessionRepository;
@@ -15,6 +17,12 @@ export class VotingSessionController {
     }
 
     async createVotingSession(votingSessionData: VotingSessionPostData): Promise<VotingSession> {
+        //to create a voting session the voting topic must be valid and can`t be another session active
+        if (!votingSessionData.topicId) throw new BadRequestError(ERROR_MESSAGES.SESSION_NOT_FOUND);
+
+        const activeSession = await this.repository.getVotingSessionByTopicId(votingSessionData.topicId);
+        if (activeSession.length > 0) throw new BadRequestError(ERROR_MESSAGES.ACTIVE_SESSION_FOUND);
+
         const votingSession = VotingSession.create(VotingTopic.fromId(votingSessionData.topicId), votingSessionData.durationInMinutes);
         return this.repository.createVotingSession(votingSession);
     }
@@ -24,10 +32,12 @@ export class VotingSessionController {
     }
 
     async getVotingSessionById(id: number): Promise<VotingSession | undefined> {
+        if (!id) throw new BadRequestError(ERROR_MESSAGES.SESSION_NOT_FOUND);
         return this.repository.getVotingSessionById(id);
     }
 
     async getVotingSessionByTopicId(topicId: number): Promise<VotingSession[]> {
+        if (!topicId) throw new BadRequestError(ERROR_MESSAGES.SESSION_NOT_FOUND);
         return await this.repository.getVotingSessionByTopicId(topicId);
     };
 }
