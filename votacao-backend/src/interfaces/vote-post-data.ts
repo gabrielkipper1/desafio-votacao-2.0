@@ -2,6 +2,6 @@ import { VotingOption } from "../entities/voting-options";
 
 export interface VotePostData {
     topicId: number;
-    userId: number;
+    cpf: string;
     vote: VotingOption;
 }
