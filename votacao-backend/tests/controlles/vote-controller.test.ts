@@ -8,9 +8,9 @@ import { VotingOption } from "../../src/entities/voting-options";
 describe("VoteController", () => {
     let voteController: VoteController;
     let voteRepository: MockVoteRepository;
-    const topic = VotingTopic.create("Foo Topic", "Foo Description");
-    const fooUser = User.create("Foo User", "foo@test.com", "1234");
-    const barUser = User.create("Bar User", "bar@test.com", "abcd");
+    const topic = VotingTopic.existing(1, "Foo Topic", "Foo Description", []);
+    const fooUser = User.existing(1, "Foo User", "foo@test.com", "1234");
+    const barUser = User.existing(1, "Bar User", "bar@test.com", "abcd");
 
     beforeEach(() => {
         voteRepository = new MockVoteRepository();
@@ -19,8 +19,9 @@ describe("VoteController", () => {
 
     it("should save a vote", async () => {
         const vote = Vote.create(fooUser, topic, VotingOption.NO)
-        const savedVote = await voteController.createVote(vote);
-        expect(savedVote).toBe(vote);
+        const user = User.existing(1, "Foo User", "foo@test.com", "1234");
+        const savedVote = await voteController.createVote(user, { cpf: user.cpf!, topicId: topic.id as number, vote: VotingOption.NO });
+        expect(savedVote).toBeInstanceOf(Vote);
     });
 
     it("should get the only vote from a topic", async () => {

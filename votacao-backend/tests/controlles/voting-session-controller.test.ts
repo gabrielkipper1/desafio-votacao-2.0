@@ -6,7 +6,7 @@ import { VotingTopic } from "../../src/entities/voting-topic";
 describe("VotingSessionController", () => {
     let votingSessionController: VotingSessionController;
     let votingSessionRepository: MockVotingSessionRepository;
-    const topic = VotingTopic.create("Foo Topic", "Description of Foo Topic");
+    const topic = VotingTopic.existing(1, "Foo Topic", "Description of Foo Topic", []);
 
     beforeEach(() => {
         votingSessionRepository = new MockVotingSessionRepository();
@@ -14,12 +14,15 @@ describe("VotingSessionController", () => {
     });
 
     it("should save a voting session", async () => {
-        const savedVotingSession = await votingSessionController.createVotingSession(VotingSession.create(topic, 10));
+        const savedVotingSession = await votingSessionController.createVotingSession({
+            topicId: topic.id as number,
+            durationInMinutes: 10,
+        });
         expect(savedVotingSession).toBe(savedVotingSession);
     });
 
     it("should get a voting session by id", async () => {
-        await votingSessionRepository.createVotingSession(VotingSession.create(topic, 10));
+        await votingSessionRepository.createVotingSession(VotingSession.existing(1, topic, new Date(), new Date(Date.now() + 60000)));
         const foundVotingSession = await votingSessionController.getVotingSessionById(topic.id as number);
         expect(foundVotingSession?.id).toEqual(topic.id)
     });

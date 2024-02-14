@@ -2,6 +2,7 @@ import { User } from '../../src/entities/user';
 import { Vote } from '../../src/entities/vote';
 import { VotingOption } from '../../src/entities/voting-options';
 import { VotingTopic } from '../../src/entities/voting-topic';
+import { ERRO_MESSAGES } from '../../src/exceptions/erro-messages';
 
 describe('Vote Creation', () => {
     it('should create a new vote', () => {
@@ -13,6 +14,6 @@ describe('Vote Creation', () => {
 
     it('should throw an error if a value is empty', () => {
         const user: User = User.create('foo user', 'foo@test.com', '1234');
-        expect(() => Vote.create(user, undefined, VotingOption.NO)).toThrow('Invalid input values');
+        expect(() => Vote.create(user, undefined, VotingOption.NO)).toThrow(ERRO_MESSAGES.INVALID_DATA);
     });
 });

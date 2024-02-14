@@ -3,6 +3,7 @@ import { Vote } from "../../src/entities/vote";
 import { VotingOption } from "../../src/entities/voting-options";
 import { VotingSession } from "../../src/entities/voting-session";
 import { VotingTopic } from "../../src/entities/voting-topic";
+import { ERRO_MESSAGES } from "../../src/exceptions/erro-messages";
 
 describe('Voting Topic Creation', () => {
 
@@ -14,11 +15,11 @@ describe('Voting Topic Creation', () => {
     })
 
     it('should throw an error if a value is empty', () => {
-        expect(() => VotingTopic.create("", "foo category")).toThrow('Invalid input values');
+        expect(() => VotingTopic.create("", "foo category")).toThrow(ERRO_MESSAGES.INVALID_DATA);
     });
 
     it('should throw an error if a value is undefined', () => {
-        expect(() => VotingTopic.create(undefined, "")).toThrow('Invalid input values');
+        expect(() => VotingTopic.create(undefined, "")).toThrow(ERRO_MESSAGES.INVALID_DATA);
     });
 
     it('add vote', () => {
@@ -37,7 +38,7 @@ describe('Voting Topic Creation', () => {
         expect(() => {
             topic.addVote(voteNo);
             topic.addVote(voteYes)
-        }).toThrow('User cannot vote twice on same topic');
+        }).toThrow(ERRO_MESSAGES.USER_ALREADY_VOTED);
     });
 
     it('add two votes for different users', () => {
