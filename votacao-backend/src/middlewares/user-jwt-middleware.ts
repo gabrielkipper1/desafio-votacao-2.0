@@ -1,25 +1,23 @@
 import { NextFunction } from "express";
 import { JWTEncoder } from "../data-parsers/credentials/jwt-encoder";
 import { Request, Response } from "express";
+import { BadRequestError } from "../exceptions/bad-request-error";
+import { ERROR_MESSAGES } from "../exceptions/erro-messages";
 
 export async function UserJWTMiddleware(req: Request, res: Response, next: NextFunction) {
     const token = req.headers.authorization;
     if (!token) {
-        throw new Error('No token provided');
+        throw new BadRequestError(ERROR_MESSAGES.INVALID_TOKEN);
     }
 
-    const splitBearer = token.split(' ')[1];
-    if (!splitBearer) {
-        throw new Error('Invalid token');
-    }
-
+    const splitBearer = token.replace('Bearer ', '');
     const decoder = new JWTEncoder();
     const decoded = await decoder.validate(splitBearer);
     if (!decoded) {
-        throw new Error('Error Decoding Token');
+        throw new BadRequestError(ERROR_MESSAGES.ERROR_DECODING_TOKEN);
     }
 
-    req.body.user = decoded;
-    req.body.userId = decoded['user']['id']
+    req.body.user = decoded['user'];
+    req.body.userId = decoded['user']
     next();
 };
