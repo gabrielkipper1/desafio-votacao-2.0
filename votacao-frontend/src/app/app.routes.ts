@@ -8,6 +8,7 @@ import { AppStartComponent } from './app-start/app-start.component';
 import { authGuard } from './guards/auth-guard/auth.guard';
 import { refreshTokenGuard } from './guards/refresh-token-guard/refresh-token.guard';
 import { SignupScreenComponent } from './screens/signup-screen/signup-screen.component';
+import { adminGuard } from './guards/admin-guard/admin.guard';
 
 export const routes: Routes = [
     { path: '', component: AppStartComponent },
@@ -16,5 +17,5 @@ export const routes: Routes = [
     { path: 'signup', component: SignupScreenComponent },
     { path: 'topic/:topicId', component: TopicDetailScreenComponent },
     { path: 'new-topic', component: CreateTopicFormComponent },
-    { path: 'vote/:topicId', canActivate: [authGuard], component: VoteScreenComponent }
+    { path: 'vote/:topicId', canActivate: [adminGuard], component: VoteScreenComponent }
 ];

@@ -13,7 +13,6 @@ import { environment } from '../../environments/environment';
   providedIn: 'root',
 })
 export class AuthService {
-  userToken: UserTokenData | undefined;
   onSignIn!: Subscription;
 
   constructor(private http: HttpClient, private tokenService: TokenService) {
@@ -21,7 +20,6 @@ export class AuthService {
 
   signIn(signInData: SignInData): Observable<UserTokenData> {
     return this.http.post<UserTokenData>(environment.host + environment.signIn, signInData).pipe(map(data => {
-      console.log("signin data", data)
       this.saveToken(data);
       return data;
     }));
@@ -34,55 +32,43 @@ export class AuthService {
     }));
   }
 
-  validate(userToken: string): Observable<boolean> {
-    if (this.tokenService === undefined) {
+  validate(token: string): Observable<boolean> {
+    if (this.getToken() === undefined) {
       return of(false);
     }
 
-    return this.http.post<UserTokenData>(environment.host + environment.validate, { token: userToken }).
+    return this.http.post<UserTokenData>(environment.host + environment.validate, { token: this.getToken()?.token }).
       pipe(map(data => {
         this.saveToken(data);
         return true;
       }));
   }
 
-  updateUserInfo(): Observable<boolean> {
-    const token = this.getToken();
-    if (token === undefined) {
-      return of(true);
-    }
-
-    return this.validate(token.token);
+  isAdmin(): Observable<boolean> {
+    return this.http.get<boolean>(environment.host + environment.admin);
   }
 
   isLoggedIn(): Observable<boolean> {
-    if (this.userToken !== undefined) {
-      return this.validate(this.userToken.token).pipe(map(data => {
+    const token = this.getToken();
+    if (token !== undefined) {
+      return this.validate(token.token).pipe(map(data => {
         return data !== undefined;
       }));
     }
     return of(false);
   }
 
+  getToken(): UserTokenData | undefined {
+    return this.tokenService.getToken();
+  }
+
   saveToken(tokenData: UserTokenData) {
-    console.log("save token from auth service", tokenData);
-    this.userToken = tokenData;
     this.tokenService.saveToken(tokenData);
   }
 
   signOut() {
-    this.userToken = undefined;
     this.tokenService.removeToken();
   }
 
-  getToken(): UserTokenData | undefined {
-    console.log("get token from auth service");
-    if (this.tokenService.getToken() !== undefined) {
-      return this.userToken;
-    }
-
-    this.userToken = this.tokenService.loadToken();
-    return this.userToken;
-  }
 
 }

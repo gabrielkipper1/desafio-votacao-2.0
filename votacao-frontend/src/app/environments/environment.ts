@@ -6,6 +6,7 @@ export const environment = {
     signIn: '/signin',
     signUp: '/signup',
     validate: '/validate',
+    admin: '/admin',
 
     //session
     session: (topicId: number) => `/topic/${topicId}/session`,
