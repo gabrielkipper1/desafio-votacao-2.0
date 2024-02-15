@@ -1,17 +1,19 @@
 <mat-card class="card">
     <mat-card-header class="card-header">Sessão de Votação</mat-card-header>
 
-    <p *ngIf="session" class="start-time">Abertura: {{session.start_date | date}} - {{session.start_date
-        | date: 'hh:mm:ss'}}</p>
-    <p *ngIf="session" class="end-time">Encerramento: {{session.start_date | date}} - {{session.end_date |
-        date: 'hh:mm:ss'}}</p>
+    <div class="times" *ngIf="session!==undefined">
+        <p class="start-time">Abertura: {{session!.start_date | date}} - {{session!.start_date
+            | date: 'hh:mm:ss'}}</p>
+        <p *ngIf="session" class="end-time">Encerramento: {{session.start_date | date}} - {{session.end_date |
+            date: 'hh:mm:ss'}}</p>
+    </div>
 
     <!-- show message if session is closed -->
-    <div *ngIf="!isOpen()">
+    <div *ngIf="remainingTime<=0">
         <p class="out-of-time">Sessão de votação encerrada</p>
     </div>
     <!-- show timer if session is open -->
-    <div *ngIf="isOpen()">
+    <div *ngIf="remainingTime>0">
         <p class="remaining-time">Tempo restante: {{ remainingTime | remainingTime }} </p>
     </div>
 </mat-card>

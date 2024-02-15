@@ -15,28 +15,18 @@ import { MatCardModule } from '@angular/material/card';
 })
 export class SessionTimerComponent {
   private timerSubscription!: Subscription;
-  @Input() session!: Session;
+  @Input() session: Session | undefined;
   remainingTime!: number;
 
-  ngOnInit(): void {
 
+  ngOnInit(): void {
     if (this.session === undefined) {
       this.remainingTime = 0;
       return;
     }
 
     this.calculateRemainingTime();
-    this.timerSubscription = interval(1000)
-      .pipe(
-        map(() => this.calculateRemainingTime())
-      )
-      .subscribe(() => {
-        // this.setRemainingTimeColor();
-      });
-  }
-
-  isOpen(): boolean {
-    return this.remainingTime > 0;
+    this.timerSubscription = interval(1000).pipe(map(() => this.calculateRemainingTime())).subscribe();
   }
 
   ngOnDestroy(): void {
@@ -47,7 +37,7 @@ export class SessionTimerComponent {
 
   calculateRemainingTime(): void {
     const now = new Date().getTime();
-    const endTime = new Date(this.session.end_date).getTime();
+    const endTime = new Date(this.session!.end_date).getTime();
     this.remainingTime = Math.max(0, endTime - now) / 1000;
   }
 }
