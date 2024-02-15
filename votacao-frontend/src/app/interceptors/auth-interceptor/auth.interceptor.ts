@@ -19,11 +19,12 @@ export class AuthInterceptor implements HttpInterceptor {
       return next.handle(request);
     }
 
-    if (this.auth.getToken() !== undefined) {
-      console.log()
+    const token = this.auth.getToken();
+
+    if (token !== undefined && token.token != undefined) {
       request = request.clone({
         setHeaders: {
-          Authorization: `Bearer ${this.auth.userToken?.token}`
+          Authorization: `Bearer ${token.token}`
         }
       });
     }

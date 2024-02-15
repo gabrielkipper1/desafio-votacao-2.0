@@ -1,0 +1,43 @@
+<div class="background">
+    <div class="content">
+        <!-- header title and home button -->
+        <div class="header">
+            <h1 class="header-text">Detalhes da Pauta</h1>
+            <div>
+                <button class="button-home" mat-mini-fab color="primary" (click)="gotoHome()">
+                    <mat-icon>home</mat-icon>
+                </button>
+                <div class="text-under">
+                    Voltar
+                </div>
+            </div>
+        </div>
+        <!-- topic details components -->
+        <div *ngIf="(topic$ |async) as topic; else loading">
+            <div *ngIf="topic">
+                <div>
+                    <!--topic details-->
+                    <app-topic-detail [topic]="topic"></app-topic-detail>
+                </div>
+                <div>
+                    <!--timer component-->
+                    <app-session-timer [session]="topic.sessions[0]"></app-session-timer>
+                </div>
+                <div>
+                    <!--vote result-->
+                    <app-voting-result [topic]="topic"></app-voting-result>
+                </div>
+            </div>
+        </div>
+
+        <!-- error message -->
+        <div class="error-message" *ngIf="errorMessage">
+            <p>{{errorMessage}}</p>
+        </div>
+    </div>
+</div>
+
+<!-- loading spinner -->
+<ng-template #loading>
+    <app-loading class="loading" message="Carregando Pautas"></app-loading>
+</ng-template>

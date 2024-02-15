@@ -1,0 +1,66 @@
+<body>
+    <div class="background">
+        <div class="content">
+            <!-- header text and buttons -->
+            <div class="header">
+                <div>
+                    <h1 class="title mat-display-2">Pautas</h1>
+                </div>
+                <div class="button-list">
+                    <div *ngIf="canCreateTopic" class="button-text">
+                        <button class="button-add" mat-mini-fab color="primary" (click)="onCreateNewTopicClicked()">
+                            <mat-icon>add</mat-icon>
+                        </button>
+                        <div class="text-under">
+                            Criar
+                        </div>
+                    </div>
+                    <div *ngIf="isSignedIn" class="button-text">
+                        <button class="button-signout" mat-mini-fab color="warn" (click)="signOut()">
+                            <mat-icon>logout</mat-icon>
+                        </button>
+                        <div class="text-under">
+                            Sair
+                        </div>
+                    </div>
+                    <div *ngIf="!isSignedIn" class="button-text">
+                        <button class="button-signin" mat-mini-fab color="primary" (click)="signIn()">
+                            <mat-icon>login</mat-icon>
+                        </button>
+                        <div class="text-under">
+                            Entrar
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- search bar -->
+            <div class="field-div">
+                <mat-form-field class="field-form">
+                    <input matInput placeholder="Buscar por categoria" [(ngModel)]="searchTerm"
+                        (ngModelChange)="update()">
+                </mat-form-field>
+            </div>
+            <!-- list of topics -->
+            <div class="columns">
+                <ng-container *ngIf="(topics$|async) as topics; else loading">
+                    <div class="topic-list" *ngFor="let topic of topics">
+                        <app-topic-card class="topic-card" [topic]="topic"></app-topic-card>
+                    </div>
+                    <div class="no-topics" *ngIf="topics.length === 0">
+                        <p>Nenhuma pauta encontrada</p>
+                    </div>
+                </ng-container>
+
+                <!-- Erro -->
+                <div class="error-message" *ngIf="errorMessage">
+                    <p class="error-message-text">{{errorMessage}}</p>
+                </div>
+
+                <!-- loading spinner -->
+                <ng-template #loading>
+                    <app-loading class="loading" message="Carregando Pautas"></app-loading>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</body>

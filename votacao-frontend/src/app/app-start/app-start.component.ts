@@ -4,7 +4,7 @@ import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common
 import { TokenService } from '../services/token-service/token.service';
 import { Router } from '@angular/router';
 import { AuthInterceptor } from '../interceptors/auth-interceptor/auth.interceptor';
-import { LoadingComponent } from '../loading-component/loading.component';
+import { LoadingComponent } from '../components/loading-component/loading.component';
 
 @Component({
   selector: 'app-app-start',

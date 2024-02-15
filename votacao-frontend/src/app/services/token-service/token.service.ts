@@ -11,15 +11,19 @@ export class TokenService {
   constructor() { }
 
   getToken() {
+    if (this.userToken === undefined) {
+      this.userToken = this.loadToken();
+    }
+
     return this.userToken;
+  }
+
+  hasToken(): boolean {
+    return this.loadToken() !== undefined;
   }
 
   removeToken() {
     localStorage.setItem('user-token', "");
-  }
-
-  hasToken() {
-    return this.userToken !== undefined;
   }
 
   saveToken(userToken: UserTokenData) {
@@ -35,7 +39,6 @@ export class TokenService {
           this.userToken = JSON.parse(token);
         }
         catch (e) {
-          console.log("[TOKEN] error parsing token");
           return undefined;
         }
       }

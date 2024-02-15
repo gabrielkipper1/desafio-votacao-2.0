@@ -5,7 +5,7 @@ import { RouterStateSnapshot } from '@angular/router';
 import { AuthService } from '../../services/auth-service/auth.service';
 import { RouteService } from '../../services/route-service/route.service';
 import { authGuard } from './auth.guard';
-import { LoginScreenComponent } from '../../login-screen/login-screen.component';
+import { LoginScreenComponent } from '../../screens/login-screen/login-screen.component';
 import { adminGuard } from '../admin-guard/admin.guard';
 
 describe('AuthGuard', () => {
