@@ -4,7 +4,7 @@ import { Topic } from '../../interfaces/topic';
 import { TopicService } from '../../services/topic-service/topic.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { SessionTimerComponent } from '../../components/session-timer-component/session-timer.component';
-import { VotingResultComponent } from '../home-screen/voting-result.component';
+import { VotingResultComponent } from '../voting-result-screen/voting-result.component';
 import { LoadingComponent } from '../../components/loading-component/loading.component';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';

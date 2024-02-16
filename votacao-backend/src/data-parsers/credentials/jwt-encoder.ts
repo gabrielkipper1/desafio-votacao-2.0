@@ -8,7 +8,7 @@ export class JWTEncoder<T> implements TokenEncoder {
     secret: string = process.env.JWT_SECRET || "default-secret";
 
     async encode(payload: object): Promise<string> {
-        return jwt.sign(payload, this.secret, { expiresIn: "3m" });
+        return jwt.sign(payload, this.secret, { expiresIn: "55m" });
     }
 
     async validate(token: string): Promise<object> {

@@ -74,6 +74,10 @@ export class TopicListScreenComponent {
     this.router.navigate(['/', 'new-topic']);
   }
 
+  goToUsers() {
+    this.router.navigate(['/', 'users']);
+  }
+
   signIn() {
     this.router.navigate(['/', 'login']);
   }

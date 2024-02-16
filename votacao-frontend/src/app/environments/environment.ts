@@ -8,6 +8,10 @@ export const environment = {
     validate: '/validate',
     admin: '/admin',
 
+    //user
+    user: '/user',
+    user_role: '/admin',
+
     //session
     session: (topicId: number) => `/topic/${topicId}/session`,
 

@@ -8,6 +8,14 @@
                 </div>
                 <div class="button-list">
                     <div *ngIf="canCreateTopic" class="button-text">
+                        <button class="button-users" mat-mini-fab color="primary" (click)="goToUsers()">
+                            <mat-icon>group</mat-icon>
+                        </button>
+                        <div class="text-under">
+                            Usuários
+                        </div>
+                    </div>
+                    <div *ngIf="canCreateTopic" class="button-text">
                         <button class="button-add" mat-mini-fab color="primary" (click)="onCreateNewTopicClicked()">
                             <mat-icon>add</mat-icon>
                         </button>
