@@ -18,7 +18,7 @@
 </mat-card>
 
 <!-- user undefined -->
-<mat-card class="user-card">
+<mat-card *ngIf="!user" class="user-card">
     <mat-card-header>
         <div mat-card-avatar class="user-avatar">
             <mat-icon class="icon-avatar"> account_circle</mat-icon>

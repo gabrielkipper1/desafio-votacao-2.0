@@ -19,5 +19,5 @@ export const routes: Routes = [
     { path: 'topic/:topicId', component: TopicDetailScreenComponent },
     { path: 'new-topic', component: CreateTopicFormComponent, canActivate: [adminGuard] },
     { path: 'vote/:topicId', canActivate: [authGuard], component: VoteScreenComponent },
-    { path: 'users', component: UsersScreenComponent }
+    { path: 'users', component: UsersScreenComponent, canActivate: [adminGuard] }
 ];
