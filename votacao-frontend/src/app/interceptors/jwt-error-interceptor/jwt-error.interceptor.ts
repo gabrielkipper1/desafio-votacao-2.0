@@ -20,23 +20,9 @@ export class JwtErrorInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request);
-    // //intercept 401 errors
-    // return next.handle(request).pipe(
-    //   catchError((error: HttpErrorResponse) => {
-    //     if (error.status === 401 || error.message === "jwt expired" || error.error === "jwt expired") {
-    //       console.log("jwt expired catch error");
-    //       this.saveRoute()
-    //       this.auth.signOut();
-    //       this.showErrorSnackBar("Sua sessão expirou, faça login novamente");
-    //       this.router.navigate(['/login']);
-    //     }
-    //     return throwError(() => new Error(error.message));
-    //   })
-    // );
   }
 
   saveRoute() {
-    console.log("saving route", this.router.url);
     this.routeService.saveRoute(this.router.url);
   }
 

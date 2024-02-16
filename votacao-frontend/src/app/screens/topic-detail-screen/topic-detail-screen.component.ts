@@ -38,8 +38,6 @@ export class TopicDetailScreenComponent {
   }
 
   setErrorMessage(message: string) {
-    console.log("error message!");
-    console.log(message);
     if ('string' !== typeof message) {
       message = 'Erro desconhecido';
     }

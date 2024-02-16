@@ -23,8 +23,6 @@ export class UserCardComponent {
   constructor(private userService: UserService, private snack: MatSnackBar) { }
 
   toggleAdminStatus(): void {
-    console.log('toggleAdminStatus');
-
     this.userService.updateUserRole({ userId: this.user.id, active: !this.user.isadmin })
       .subscribe({
         next: (user: UserAdmin) => {

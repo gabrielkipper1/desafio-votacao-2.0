@@ -9,6 +9,6 @@ export function InterfaceToQuery(params: any): HttpParams {
             httpParams = httpParams.append(key, value.toString());
         }
     }
-    console.log(httpParams.toString());
+
     return httpParams;
 }

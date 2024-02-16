@@ -41,7 +41,6 @@ export class TopicListScreenComponent {
   ngOnInit() {
     this.topics$ = this.topicService.getActiveTopics({ category: "" }).pipe(
       catchError((err) => {
-        console.log("erro catch")
         this.setErrorMessage(err.error);
         return of(err);
       })
@@ -52,7 +51,6 @@ export class TopicListScreenComponent {
 
   private checkForAdmin() {
     const token = this.auth.getToken();
-    console.log("token", token);
 
     if (token !== null && token !== undefined) {
       this.isSignedIn = true;
