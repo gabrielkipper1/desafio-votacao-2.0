@@ -29,4 +29,7 @@ export class UserController {
         return await this.repository.getUserByCpf(cpf);
     }
 
+    async getUsers() {
+        return await this.repository.getUsersRole();
+    }
 }

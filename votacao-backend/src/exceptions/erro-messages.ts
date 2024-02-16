@@ -28,4 +28,5 @@ export const ERROR_MESSAGES = {
     TOKEN_EXPIRED: "Token expirado",
     TOKEN_NOT_YET_VALID: "Token ainda não é válido",
     INVALID_DATA: "Dados inválidos",
+    NO_PRIVILEGES: "Sem privilégios",
 }   

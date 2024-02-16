@@ -13,6 +13,8 @@ import { PasswordController } from "../../controllers/password-controller";
 import { TokenController } from "../../controllers/token-controller";
 import { UserAdminController } from "../../controllers/user-admin-controller";
 import { UserJWTMiddleware } from "../../middlewares/user-jwt-middleware";
+import { AuthMiddleware } from "../../middlewares/auth-middleware";
+import { SetAdminData } from "../../interfaces/set-admin-data";
 
 export const AuthRoutes = (tokenController: TokenController, userRepository: UserController, passwordController: PasswordController, adminController: UserAdminController) => {
     const controller = new AuthController(passwordController, userRepository, tokenController, adminController);
@@ -39,6 +41,16 @@ export const AuthRoutes = (tokenController: TokenController, userRepository: Use
         const userId = req.body["userId"] as string
         const isAdmin = await adminController.isUserAdmin(Number(userId));
         res.status(200).send(isAdmin);
+    })
+
+    router.post('/admin', AuthMiddleware, async (req, res) => {
+        const requester = req.body["userId"] as string
+        const data = req.body["data"] as SetAdminData;
+        const result = await adminController.setAdmin(Number(requester), data);
+        res.status(200).send({
+            "isadmin": result.active,
+            "id": result.userId
+        });
     })
 
     return router;

@@ -10,6 +10,13 @@ export const UserRoutes = (repository: UserRepository) => {
     const parser = new UserJsonParser();
     const controller = new UserController(repository);
 
+    router.get('/user', async (req, res) => {
+        const users = await controller.getUsers();
+        res.status(200).json({
+            "users": users,
+        });
+    });
+
     router.post('/user', async (req, res) => {
         const user = parser.parse(req.body);
         const createdUser = await controller.createUser(user);
