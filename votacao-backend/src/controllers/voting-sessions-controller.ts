@@ -20,8 +20,12 @@ export class VotingSessionController {
         //to create a voting session the voting topic must be valid and can`t be another session active
         if (!votingSessionData.topicId) throw new BadRequestError(ERROR_MESSAGES.SESSION_NOT_FOUND);
 
-        const activeSession = await this.repository.getVotingSessionByTopicId(votingSessionData.topicId);
-        if (activeSession.length > 0) throw new BadRequestError(ERROR_MESSAGES.ACTIVE_SESSION_FOUND);
+        const sessions = await this.repository.getVotingSessionByTopicId(votingSessionData.topicId);
+
+        if (sessions.length > 0) {
+            const hasActiveSession = sessions.filter((session) => new Date(session.end_date.toString()) > new Date()).length > 0;
+            if (hasActiveSession) throw new BadRequestError(ERROR_MESSAGES.ACTIVE_SESSION_FOUND);
+        }
 
         const votingSession = VotingSession.create(VotingTopic.fromId(votingSessionData.topicId), votingSessionData.durationInMinutes);
         return this.repository.createVotingSession(votingSession);
