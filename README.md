@@ -38,7 +38,7 @@ Os controllers se comunicam com os fontes externas de dados utilizando interface
 
 As interfaces do repository devem ser implementadas por fontes de dados e/ou pacotes externos que queiram se comunicar com o sistema. Neste projeto foi utilizado typeorm para mapear as entidades e fazer operações de CRUD de maneira mais fácil. Neste caso, é nossa responsabilidade implementar as interfaces de repository utilizando o typeorm e suas dependências. 
 
-Uma das vantagens de utilizar um sistema em camadas seria a fácil substituição de partes da aplicação sem alterar o funcionamento da mesma. Poderíamos substituir a implementação do typeorm por outro framework ORM, como o prisma, por exemplo, ou até mesmo usar SQL puro, e nosso sistema funcionaria da mesma maneira(desde que a implementação esteja correta e siga o que foi definido nas interfaces), aplicando assim o princípio open-closed de SOLID. Para facilitar essas substituições pode ser utilizado um sistema de injeção de dependência
+Uma das vantagens de utilizar um sistema em camadas seria a fácil substituição de partes da aplicação sem alterar o funcionamento da mesma. Poderíamos substituir a implementação do typeorm por outro framework ORM, como o prisma, por exemplo, ou até mesmo usar SQL puro, e nosso sistema funcionaria da mesma maneira(desde que a implementação esteja correta e siga o que foi definido nas interfaces), aplicando assim o princípio open-closed de SOLID. Para facilitar essas substituições pode ser utilizado um sistema de injeção de dependência(nao foi implementado no projeto para não se estender muito)
 
 #### Typeorm
 Para auxiliar nas operações de CRUD foi utilizado o typeorm. Para cada entidade do sistema que deve ser salva no banco de dados, criamos uma definição de schema, seguindo as orientações da documentação do typeorm. Desta maneira conseguimos separar o núcleo do nosso sistema das dependências do typeorm.
@@ -71,9 +71,12 @@ ng test --no-watch --code-coverage
 
 O projeto frontend foi divido em componentes e telas: cada tela é um conjunto de componentes, e cada componente é um elemento de uma tela.
 
-O app possui seis telas(login, cadastro, home, detalhes, voto e criar tópico).
+O app possui sete telas(login, cadastro, home, detalhes, usuários, votar e criar tópico).
 
-A rota inicial "/" redireciona para "/home", que é um rota sem proteção, nela podem ser vistos as votações abertas e que podem ser filtradas pelo campo de texto na parte superior(filtro por categoria). caso o usuário seja um administrador, haverá um botão para criar novas pautas.
+A rota inicial "/" redireciona para "/home", que é um rota sem proteção, nela podem ser vistos as votações abertas e que podem ser filtradas pelo campo de texto na parte superior(filtro por categoria). 
+caso o usuário seja um administrador: haverá um botão para criar novas pautas, um botao para acessar a área de usários e serão listados TODOS os tópicos e nao somente os que estão com votação ativa`.
+
+Quando um administrador acessar a tela de usuários, ele poderá ver a listagem completa de todos que estão cadastrados na plataforma, e também poderá adicionar e remover administradores, estando bloqueado somente se auto remover das lista de administradores.
 
 A tela de votação é protegida, e requer que o usuário esteja logado. caso nao esteja, será redirecionado para o login e após entrar, será redirecionado de volta para a tela de votação.
 
@@ -83,7 +86,7 @@ Na tela de detalhes podemos ver os dados da pauta e o resultado da votação.
 
 Na tela de criação de pauta, inserimos os dados necessários para criar um nova votação. Apenas administradores podem acessar essa tela e criar pautas, esta rota é protegida por um AdminGuard.
 
-Todos as telas e componentes estão testados, garantindo que todos campos necessários para o funcionamento estão disponíveis e que em caso de erro, cada componente sabe como se comportar sem depender da nada externo.
+a maior parte das telas e componentes estão testados, garantindo que todos campos necessários para o funcionamento estão disponíveis e que em caso de erro, cada componente sabe como se comportar sem depender da nada externo.
 
 Para buscar dados que são exibidos na tela foi utilizado async pipe, e também foi criado um pipe customizado para mostrar a contagem regressiva da sessão de votação
 
