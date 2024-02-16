@@ -1,6 +1,6 @@
 import { VotingSession } from '../../src/entities/voting-session';
 import { VotingTopic } from '../../src/entities/voting-topic';
-import { ERRO_MESSAGES } from '../../src/exceptions/erro-messages';
+import { ERROR_MESSAGES } from '../../src/exceptions/erro-messages';
 
 describe('Voting Session Creation', () => {
     const votingTopic = VotingTopic.create('Foo Topic', 'Foo category');
@@ -10,7 +10,7 @@ describe('Voting Session Creation', () => {
     })
 
     it('should throw an error if a value is undefined', () => {
-        expect(() => VotingSession.create(undefined, 10)).toThrow(ERRO_MESSAGES.INVALID_DATA);
+        expect(() => VotingSession.create(undefined, 10)).toThrow(ERROR_MESSAGES.INVALID_DATA);
     })
 
     it('should create a votting sessions with duration as zero', () => {
