@@ -15,6 +15,7 @@ import { CreateCredentialsTable1707487847662 } from "../migrations/1707487847662
 import { UserPasswordSchema } from "../schemas/credential-schema";
 import { UserAdmin } from "../../../entities/user-admin";
 import { AdminSchema } from "../schemas/admin-schema";
+import { CreateAdminUser1708009291294 } from "../migrations/1708009291294-create-admin-user";
 
 require('dotenv').config();
 
@@ -44,6 +45,7 @@ export const TypeORMDataSource = new DataSource({
         CreateVotingTopicTable1707276311154,
         CreateVotingSessionTable1707312453667,
         CreateCredentialsTable1707487847662,
-        CreateUserAdminTable1707315160933
+        CreateUserAdminTable1707315160933,
+        CreateAdminUser1708009291294
     ],
 })
