@@ -39,7 +39,7 @@ export class AuthController {
         if (!validatedUser) throw new BadRequestError(ERROR_MESSAGES.PASSWORD_INCORRECT);
 
         const isAdmin = await this.userAdminContrller.isUserAdmin(validatedUser.id as number);
-        const token = await this.tokenController.createToken(validatedUser);
+        const token = await this.tokenController.createToken(validatedUser, isAdmin);
         if (!token) throw new BadRequestError(ERROR_MESSAGES.ERROR_CREATING_TOKEN)
 
         return {
@@ -71,11 +71,15 @@ export class AuthController {
         if (!savedCredentials) throw new BadRequestError(ERROR_MESSAGES.ERROR_CREATING_CREDENTIALS);
 
         const isAdmin = await this.userAdminContrller.isUserAdmin(savedUser.id as number);
-        const token = await this.tokenController.createToken(savedUser);
+        const token = await this.tokenController.createToken(savedUser, isAdmin);
         if (!token) throw new BadRequestError(ERROR_MESSAGES.ERROR_CREATING_TOKEN);
 
         return {
-            "user": savedUser,
+            "user": {
+                "id": savedUser.id,
+                "name": savedUser.name,
+                "email": savedUser.email,
+            },
             "isAdmin": isAdmin,
             "token": token
         };
@@ -86,12 +90,16 @@ export class AuthController {
 
         const splitBearer = token.replace('Bearer ', '');
         const payload = await this.tokenController.verifyToken(splitBearer);
-        const isAdmin = await this.userAdminContrller.isUserAdmin(payload.id);
+        console.log(payload);
+        const isAdmin = await this.userAdminContrller.isUserAdmin(payload.user.id);
         return {
-            "user": payload,
+            "user": {
+                "id": payload.user.id,
+                "name": payload.user.name,
+                "email": payload.user.email,
+            },
             "isAdmin": isAdmin,
             "token": splitBearer
         };
     }
-
 }
