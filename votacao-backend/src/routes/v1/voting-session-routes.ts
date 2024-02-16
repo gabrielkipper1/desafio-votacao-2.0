@@ -11,14 +11,14 @@ export const VotingSessionRoutes = (repository: VotingSessionRepository) => {
     router.get('/session', async (req, res) => {
         const votingSessions = await controller.getActiveVotingSessions();
         res.status(200).send({
-            "voting_sessions": votingSessions,
+            "sessions": votingSessions,
         });
     });
 
     router.get('/session/:id', async (req, res) => {
         const votingSession = await controller.getVotingSessionById(Number(req.params.id));
         res.status(200).send({
-            "voting_session": votingSession,
+            "session": votingSession,
         });
     });
 
@@ -31,7 +31,7 @@ export const VotingSessionRoutes = (repository: VotingSessionRepository) => {
         }
 
         res.status(201).send({
-            "voting_session": (createdVotingTopic as VotingSession),
+            "session": (createdVotingTopic as VotingSession),
         });
     });
 

@@ -12,6 +12,7 @@ import { UserController } from "../../controllers/user-controller";
 import { PasswordController } from "../../controllers/password-controller";
 import { TokenController } from "../../controllers/token-controller";
 import { UserAdminController } from "../../controllers/user-admin-controller";
+import { UserJWTMiddleware } from "../../middlewares/user-jwt-middleware";
 
 export const AuthRoutes = (tokenController: TokenController, userRepository: UserController, passwordController: PasswordController, adminController: UserAdminController) => {
     const controller = new AuthController(passwordController, userRepository, tokenController, adminController);
@@ -34,8 +35,9 @@ export const AuthRoutes = (tokenController: TokenController, userRepository: Use
         res.status(200).send(signUpResult);
     });
 
-    router.get('/admin/:userId', async (req, res) => {
-        const isAdmin = await adminController.isUserAdmin(Number(req.params.userId));
+    router.get('/admin', UserJWTMiddleware, async (req, res) => {
+        const userId = req.body["userId"] as string
+        const isAdmin = await adminController.isUserAdmin(Number(userId));
         res.status(200).send(isAdmin);
     })
 
