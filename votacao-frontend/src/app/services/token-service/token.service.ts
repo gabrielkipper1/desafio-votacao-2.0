@@ -24,9 +24,11 @@ export class TokenService {
 
   removeToken() {
     localStorage.setItem('user-token', "");
+    this.userToken = undefined;
   }
 
   saveToken(userToken: UserTokenData) {
+    this.userToken = userToken;
     localStorage.setItem('user-token', JSON.stringify(userToken));
   }
 

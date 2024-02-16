@@ -37,10 +37,13 @@ export class AuthService {
       return of(false);
     }
 
-    return this.http.post<UserTokenData>(environment.host + environment.validate, { token: this.getToken()?.token }).
+    return this.http.post<UserTokenData>(environment.host + environment.validate, { token: token }).
       pipe(map(data => {
         this.saveToken(data);
         return true;
+      })).pipe(catchError(error => {
+        this.tokenService.removeToken();
+        return of(true);
       }));
   }
 
