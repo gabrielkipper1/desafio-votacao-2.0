@@ -46,21 +46,26 @@ app.use(cors())
 app.use(express.json());
 
 
-app.use('/', UserRoutes(new UserTypeORMRepository(TypeORMDataSource.getRepository<User>(UserSchema))));
-app.use('/', VotingTopicRoutes(
-    new VotingTopicTypeormRepository(TypeORMDataSource.getRepository<VotingTopic>(VotingTopicSchema)),
-    new VotingSessionController(new VotingSessionTypeormRepository(TypeORMDataSource.getRepository<VotingSession>(VotingSessionSchema))
-    )));
-app.use('/', VoteRoutes(new VoteTypeormRepository(TypeORMDataSource.getRepository<Vote>(VoteSchema))));
-app.use('/', VotingSessionRoutes(new VotingSessionTypeormRepository(TypeORMDataSource.getRepository<VotingSession>(VotingSessionSchema))));
-app.use('/', AuthRoutes(
-    new TokenController(new JWTEncoder()),
-    new UserController(new UserTypeORMRepository(TypeORMDataSource.getRepository<User>(UserSchema))),
-    new PasswordController(
-        new AuthTypeORMRepository(TypeORMDataSource.getRepository<UserPassword>(UserPasswordSchema)),
-        new BCryptPasswordEncoder()
-    ),
-    new UserAdminController(new UserAdminTypeOrmRepository(TypeORMDataSource.getRepository<UserAdmin>(AdminSchema))),
+//this would be replaced by a dependency injection container
+//but then it`s going to take a long time to implement
+const userRespository = new UserTypeORMRepository(TypeORMDataSource.getRepository<User>(UserSchema));
+const votingTopicRepository = new VotingTopicTypeormRepository(TypeORMDataSource.getRepository<VotingTopic>(VotingTopicSchema));
+const voteRepository = new VoteTypeormRepository(TypeORMDataSource.getRepository<Vote>(VoteSchema));
+const votingSessionRepository = new VotingSessionTypeormRepository(TypeORMDataSource.getRepository<VotingSession>(VotingSessionSchema));
+const userAdminRepository = new UserAdminTypeOrmRepository(TypeORMDataSource.getRepository<UserAdmin>(AdminSchema));
+const userPasswordRepository = new AuthTypeORMRepository(TypeORMDataSource.getRepository<UserPassword>(UserPasswordSchema));
+const tokenEncoder = new JWTEncoder();
+const passwordEncoder = new BCryptPasswordEncoder();
+
+app.use('/api/v1', UserRoutes(userRespository));
+app.use('/api/v1', VotingTopicRoutes(votingTopicRepository, new VotingSessionController(votingSessionRepository)));
+app.use('/api/v1', VoteRoutes(voteRepository));
+app.use('/api/v1', VotingSessionRoutes(votingSessionRepository));
+app.use('/api/v1', AuthRoutes(
+    new TokenController(tokenEncoder),
+    new UserController(userRespository),
+    new PasswordController(userPasswordRepository, passwordEncoder),
+    new UserAdminController(userAdminRepository),
 ));
 
 app.use(errorHandler);
