@@ -38,8 +38,8 @@ export const TypeORMDataSource = new DataSource({
         AdminSchema
     ],
     subscribers: [],
+    migrationsTransactionMode: "each",
     migrations: [
-        // CreateDatabase1707349833140,
         CreateUserTable1707265027687,
         CreateVoteTable1707276296151,
         CreateVotingTopicTable1707276311154,

@@ -17,8 +17,8 @@ export class CreateAdminUser1708009291294 implements MigrationInterface {
         const passwordEncoder = new BCryptPasswordEncoder();
 
         const user = await userRepository.save(User.create("admin", "admin@test.com", "35207752049"));
-        const credential = passwordRepository.save(UserPassword.create(user.id as number, await passwordEncoder.encode("admin")));
-        const admin = adminRepository.save(UserAdmin.create(user.id as number, true))
+        const credential = await passwordRepository.save(UserPassword.create(user.id as number, await passwordEncoder.encode("admin")));
+        const admin = await adminRepository.save(UserAdmin.create(user.id as number, true))
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
