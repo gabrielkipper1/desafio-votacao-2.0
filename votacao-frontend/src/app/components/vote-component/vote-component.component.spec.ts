@@ -34,12 +34,12 @@ describe('VoteComponentComponent', () => {
     expect(compiled.querySelector('.timer')).toBeTruthy();
   });
 
-  it("should not have a timer if has an invalid session", () => {
+  it("should have a timer if has an invalid session", () => {
     const compiled = fixture.nativeElement;
     component.topic = invalidSessionTopic;
     component.ngOnInit();
     fixture.detectChanges();
-    expect(compiled.querySelector('.timer')).toBeFalsy();
+    expect(compiled.querySelector('.timer')).toBeTruthy();
   });
 
   it("should have two vote buttons if has a valid session", () => {

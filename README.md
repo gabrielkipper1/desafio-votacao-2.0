@@ -14,6 +14,7 @@ Para rodar os testes execute
 ```bash
 npm test
 ```
+Atualmente o backend está com 73 testes. Para testar o repository do typeorm, que funciona em postgres/mysql foi utilizado sqlite. o tipo DateTime/Timestamp não é compatível nos dois bancos de dados e para isso os schemas que utilizavam esse tipo de dado fora reescritos. Também foi gerado um arquivos de conexao específico para o sqlite. Nos testes o tipo de repository injetado foi o utilizado na aplicação de produção.
 
 ## Conta administrador
 Há uma transaction do typeorm responsável por adicionar um usuário como administrador, ele será executada após a criação do banco de dados
@@ -68,6 +69,7 @@ npm install && ng serve -o
 ```bash
 ng test --no-watch --code-coverage
 ```
+Atualmente o frontend está com 112 testes, com cobertura de aproximadamente 50%, que verificam se as telas e componentes possuem todos campos e chamam os métodos solicitados
 
 O projeto frontend foi divido em componentes e telas: cada tela é um conjunto de componentes, e cada componente é um elemento de uma tela.
 
