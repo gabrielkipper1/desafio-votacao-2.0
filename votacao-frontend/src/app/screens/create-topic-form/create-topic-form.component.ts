@@ -30,7 +30,7 @@ export class CreateTopicFormComponent {
     this.topicForm = this.formBuilder.group({
       description: ['', Validators.required],
       category: ['', Validators.required],
-      duration: [0, Validators.min(0)]
+      duration: [, Validators.min(0)]
     });
   }
 
@@ -38,6 +38,10 @@ export class CreateTopicFormComponent {
     if (this.topicForm.invalid) {
       console.log('Invalid form');
       return;
+    }
+
+    if (this.topicForm.value.duration < 0 || this.topicForm.value.duration === undefined) {
+      this.topicForm.setValue({ duration: 0 });
     }
 
     this.topicService.createTopic({

@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { TopicListScreenComponent } from './screens/home-screen/topic-list-screen.component';
 import { LoginScreenComponent } from './screens/login-screen/login-screen.component';
 import { TopicDetailScreenComponent } from './screens/topic-detail-screen/topic-detail-screen.component';
-import { CreateTopicFormComponent } from './components/create-topic-form/create-topic-form.component';
+import { CreateTopicFormComponent } from './screens/create-topic-form/create-topic-form.component';
 import { VoteScreenComponent } from './screens/vote-screen/vote-screen.component';
 import { AppStartComponent } from './app-start/app-start.component';
 import { authGuard } from './guards/auth-guard/auth.guard';

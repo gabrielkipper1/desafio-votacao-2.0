@@ -1,7 +1,7 @@
-<div *ngIf="validSession">
-    <app-session-timer class="timer" [session]="validSession!"></app-session-timer>
-</div>
+<!-- session timer -->
+<app-session-timer class="timer" [session]="validSession!"></app-session-timer>
 
+<!-- voting option buttons -->
 <mat-card class="card-vote">
     <div *ngIf="validSession" class="valid-session-div">
         <div class="vote-options">
