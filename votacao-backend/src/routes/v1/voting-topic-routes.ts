@@ -1,32 +1,27 @@
 import { Router } from "express";
-import { VotingTopicController } from "../controllers/voting-topic-controller";
-import { VotingTopic } from "../entities/voting-topic";
-import { VotingTopicRepository } from "../repositories/interfaces/voting-topic-repository";
-import { VotingOption } from "../entities/voting-options";
-import { VotingSessionController } from "../controllers/voting-sessions-controller";
-import { VotingSession } from "../entities/voting-session";
+import { VotingTopicController } from "../../controllers/voting-topic-controller";
+import { VotingTopic } from "../../entities/voting-topic";
+import { VotingTopicRepository } from "../../repositories/interfaces/voting-topic-repository";
+import { VotingOption } from "../../entities/voting-options";
+import { VotingSessionController } from "../../controllers/voting-sessions-controller";
+import { VotingSession } from "../../entities/voting-session";
 import { listenerCount } from "process";
-import { VotingTopicPostData } from "../interfaces/voting-topic-post-data";
-import { TopicSearchData } from "../interfaces/topic-search-data";
+import { VotingTopicPostData } from "../../interfaces/voting-topic-post-data";
+import { TopicSearchData } from "../../interfaces/topic-search-data";
+import { UserJWTMiddleware } from "../../middlewares/user-jwt-middleware";
+import { AuthMiddleware } from "../../middlewares/auth-middleware";
 
 export const VotingTopicRoutes = (repository: VotingTopicRepository, sessionController: VotingSessionController) => {
     const router = Router();
     const controller = new VotingTopicController(repository);
 
-    router.get('/topic', async (req, res) => {
+    router.get('/topic', UserJWTMiddleware, async (req, res) => {
         const search = req.query as unknown as TopicSearchData;
-        const votingTopics = await controller.getActiveVotingTopics(search);
+        let all = req.body["isAdmin"] === true;
+        const votingTopics = await controller.getActiveVotingTopics(search, all);
         res.status(200).send(
             votingTopics,
         );
-    });
-
-    router.get('/topic/all', async (req, res) => {
-        const search = req.query as unknown as TopicSearchData;
-        const votingTopics = await controller.getActiveVotingTopics(search);
-        res.status(200).send({
-            votingTopics,
-        });
     });
 
     router.get('/topic/:id', async (req, res) => {
@@ -64,7 +59,8 @@ export const VotingTopicRoutes = (repository: VotingTopicRepository, sessionCont
         );
     })
 
-    router.post('/topic', async (req, res) => {
+    //protected route
+    router.post('/topic', AuthMiddleware, async (req, res) => {
         const votingTopic = req.body as VotingTopicPostData;
         const createdVotingTopic = await controller.createVotingTopic(votingTopic);
 
@@ -73,7 +69,7 @@ export const VotingTopicRoutes = (repository: VotingTopicRepository, sessionCont
         }
 
         res.status(201).send({
-            "votingTopic": (createdVotingTopic as VotingTopic),
+            "topic": (createdVotingTopic as VotingTopic),
         });
     });
 

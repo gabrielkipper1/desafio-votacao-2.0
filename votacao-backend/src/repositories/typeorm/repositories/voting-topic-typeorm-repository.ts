@@ -1,4 +1,4 @@
-import { ILike, MoreThan, Repository } from "typeorm";
+import { FindManyOptions, FindOptionsWhere, ILike, MoreThan, Repository } from "typeorm";
 import { VotingTopic } from "../../../entities/voting-topic";
 import { TypeORMDataSource } from "../data-sources/typeorm-postgres-data-source";
 import { VotingTopicSchema } from "../schemas/voting-topic-schema";
@@ -16,17 +16,24 @@ export class VotingTopicTypeormRepository implements VotingTopicRepository {
         return this.repository.save(votingTopic);
     }
 
-    async getActiveVotingTopics(search: TopicSearchData): Promise<VotingTopic[]> {
-        return this.repository.find(
-            {
-                where: {
-                    category: ILike(`%${search.category}%`),
-                    sessions: {
-                        end_date: MoreThan(new Date())
-                    }
-                }
+    async getActiveVotingTopics(search: TopicSearchData, listAll: boolean): Promise<VotingTopic[]> {
+        //if listAll is true, we want to list all topics, otherwise we want to list only the active ones
+        const params: FindOptionsWhere<VotingTopic> = {
+            category: ILike(`%${search.category || ""}%`)
+        };
+
+        if (!listAll) {
+            params.sessions = {
+                end_date: MoreThan(new Date())
             }
-        );
+        }
+
+        return this.repository.find({
+            where: params,
+            order: {
+                id: "DESC"
+            }
+        });
     }
 
     async getVotingTopicById(id: number): Promise<VotingTopic | undefined> {

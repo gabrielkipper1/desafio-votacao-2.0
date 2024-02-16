@@ -10,10 +10,11 @@ export class TokenController {
         this.tokenEncoder = tokenEncoder;
     }
 
-    async createToken(user: User): Promise<string> {
+    async createToken(user: User, admin: boolean): Promise<string> {
         if (!user) throw new BadRequestError(ERROR_MESSAGES.USER_INVALID_DATA)
 
         const payload = {
+            "isAdmin": admin,
             "user": {
                 "id": user.id,
                 "name": user.name,

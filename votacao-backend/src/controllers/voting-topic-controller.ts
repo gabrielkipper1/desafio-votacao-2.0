@@ -24,8 +24,8 @@ export class VotingTopicController {
         return await this.topicRepository.createVotingTopic(topic);
     }
 
-    async getActiveVotingTopics(search: TopicSearchData): Promise<VotingTopic[]> {
-        return await this.topicRepository.getActiveVotingTopics(search);
+    async getActiveVotingTopics(search: TopicSearchData, listAll: boolean): Promise<VotingTopic[]> {
+        return await this.topicRepository.getActiveVotingTopics(search, listAll);
     }
 
     async getVotingTopicById(id: number): Promise<VotingTopic | undefined> {
