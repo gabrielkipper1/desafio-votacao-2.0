@@ -1,99 +1,89 @@
-# Votação
+## Configurar API
 
-## Objetivo
+* Crie um arquivo .env seguindo o modelo fornecido.
+* O banco de dados usado no desenvolvimento foi postgres, mas deve funcionar normalmente com mysql(porém não foi testado)
+* Dentro do postgres, crie um banco de dados chamado "voting-app". As migrations do typeorm vão fazer o trabalho de criar o modelo do banco de dados.
 
-Imagine que você deve criar uma solução web para gerenciar e participar de sessões de votação.
+* Execute o comando para instalar as dependências e rodas o projeto
+```bash
+npm install && npm run
+```
 
-Essa solução deve ser executada na nuvem e promover as seguintes funcionalidades através de uma API REST:
+## Teste API
+Para rodar os testes execute
+```bash
+npm test
+```
 
-- Cadastrar uma nova pauta
-- Abrir uma sessão de votação em uma **pauta** (a sessão de votação deve ficar aberta por um tempo determinado na chamada de abertura ou 1 minuto por *default*)
-- Receber votos nas pautas (os votos são apenas 'Sim'/'Não'. Cada usuário é identificado por um id único e pode votar apenas uma vez por pauta)
-- Contabilizar os votos e dar o resultado da votação na pauta
+## Conta administrador
+Há uma transaction do typeorm responsável por adicionar um usuário como administrador, ele será executada após a criação do banco de dados
+```bash
+email : admin@test.com
+senha : admin
+cpf: 35207752049
+```
 
-Para fins de exercício a solução deve ser construída em Node no backend e Angular 2+ no frontend. Frameworks e bibliotecas são de livre escolha (desde que não infrinja direitos de uso).
+## Documentação da API
+https://documenter.getpostman.com/view/5983381/2sA2r6Y4hr#1e9a3c64-0a09-4774-b67f-8260437fceca
 
-É importante que as pautas e os votos sejam persistidos e que não sejam perdidos com o restart da aplicação.
 
-O foco dessa avaliação é a comunicação entre o backend e o frontend. Essa comunicação é feita através de mensagens no formato JSON, onde essas mensagens serão interpretadas pelo cliente para montar as telas onde o usuário vai interagir com o sistema. O formato fica a seu criterio e as telas estão descritas no anexo 1.
+## Arquitetura
+  Foi optado por usar uma arquitetura baseada em clean architecture, onde podemos separar as responsabilidades de cada componente do sistema e também evitamos poluir as nossa entidades e regras de negócio com dependências de pacotes externos que podem ser alterados e depreciados a qualquer momentos.
 
-## Como proceder
+As requisições feitas por um cliente externo passam pelo sistema de rotas do servidor, que ficam responsáveis por encapsular dados recebidos na requisição e encaminhar o que for necessário para a próxima etapa: os controllers.
+Os controllers ficam responsáveis por verificar e validar as regras de negócio e os dados necessários para que as ações possam ser tomadas(ex: verificar que todos os dados necessário para criar uma conta de usuário foram recebidas). 
 
-Por favor, realize o FORK desse repositório e implemente sua solução no FORK em seu repositório GitHub, ao final, notifique da conclusão para que possamos analisar o código implementado.
+Caso algum dado não esteja correto ou não esteja satisfazendo as regras de negócio, o controller irá rejeitar a solicitação e retornar uma exception, que será devolvida para o cliente do usuário.
+Os controllers se comunicam com os fontes externas de dados utilizando interfaces, fazendo o uso do padrão de projeto conhecido como repository. Os controllers possuem apenas um referência para a abstração do repository e faz as chamadas para a mesma.
 
-Lembre-se de deixar todas as orientações necessárias para executar o seu código.
+As interfaces do repository devem ser implementadas por fontes de dados e/ou pacotes externos que queiram se comunicar com o sistema. Neste projeto foi utilizado typeorm para mapear as entidades e fazer operações de CRUD de maneira mais fácil. Neste caso, é nossa responsabilidade implementar as interfaces de repository utilizando o typeorm e suas dependências. 
 
-## Tarefas bônus
+Uma das vantagens de utilizar um sistema em camadas seria a fácil substituição de partes da aplicação sem alterar o funcionamento da mesma. Poderíamos substituir a implementação do typeorm por outro framework ORM, como o prisma, por exemplo, ou até mesmo usar SQL puro, e nosso sistema funcionaria da mesma maneira(desde que a implementação esteja correta e siga o que foi definido nas interfaces), aplicando assim o princípio open-closed de SOLID. Para facilitar essas substituições pode ser utilizado um sistema de injeção de dependência
 
-### Tarefa Bônus 1 - Controle de usuários
+#### Typeorm
+Para auxiliar nas operações de CRUD foi utilizado o typeorm. Para cada entidade do sistema que deve ser salva no banco de dados, criamos uma definição de schema, seguindo as orientações da documentação do typeorm. Desta maneira conseguimos separar o núcleo do nosso sistema das dependências do typeorm.
+O mesmo ocorre com as operações de CRUD, que devem ser feitas em uma classe separada que implementa uma interface de repository definida anteriormente, onde cada método tem bem definido o tipo de operação a ser feita, seu parâmetros e tipo de retorno.
 
-- Criar cadastro de usuários para votação (apenas CPFs validos)
-- Adicionar usuários específicos como admin
-- Apenas usuários admin podem acessar alguns recursos
-    - Criar pautas
-    - Cadastrar usuários votantes
+#### Bcrypt
+Para codificar as senhas do usuário, foi utilizado bcrypt, um algoritmo muito popular que foi projetado para ser resistente a ataques de força bruta ao fazer uso de mais poder computacional e ser mais lento do que outros algoritmos de hashing. Para não gerarmos uma dependência do pacote externo do bcrypt dentro da API foi criado uma interface(PasswordEncoder) que é responsável por intermediar a codificação e decodificação das senhas. Implementamos essa para utilizarmos o bcrypt de forma isolada, sem interferir em nossas regras de negócio e núcleo o sistema.
 
-### Tarefa Bônus 2 - Performance
+#### JWT
+A autenticação do usuário é feita por JWT, um padrão aberto que é altamente usado em APIs e aplicações web. A interface responsável por fazer o isolamento e a comunicação do nosso sistema com as dependências do JWT se chama TokenEncoder, e ao implementar-la, novamente isolamos nosso sistema de dependências externas.
 
-- Imagine que sua aplicação possa ser usada em cenários que existam centenas de milhares de votos. Ela deve se comportar de maneira performática nesses cenários
-- Testes de performance são uma boa maneira de garantir e observar como sua aplicação se comporta
+#### Middlewares
+Foram implementados dois middlewares: um para a verificação do JWT em rotas protegidas, e outro para interceptar erros sem a necessidade de blocos try/catch em toda aplicação.
 
-### Tarefa Bônus 3 - Versionamento da API
+#### Versionamento da API
+Para versionar a api foi utilizado um padrao de rotas /api/${version}. Cada nova versão possui seu próprio arquivo de rotas. Apesar de fácil implementação, em um cenário onde as mudanças na API sejam grandes talvez a melhor solução seria subir duas versões diferentes da API e utilizar um proxy reverso para direcionar as chamadas de acordo com a versão solicitada.
 
-- Como você versionaria a API da sua aplicação? Que estratégia usar?
 
-## Dicas e observações
+# App Angular
 
-- Teste bem sua solução, evite bugs;
-- Não inicie o teste sem sanar todas as dúvidas;
-- Iremos executar a aplicação para testá-la, cuide com qualquer dependência externa e deixe claro caso haja instruções especiais para execução do mesmo;
+### Executar
+```bash
+npm install && ng serve -o
+```
 
-## Anexo 1
+### Testes (com percentual de cobertura)
+```bash
+ng test --no-watch --code-coverage
+```
 
-### Introdução
+O projeto frontend foi divido em componentes e telas: cada tela é um conjunto de componentes, e cada componente é um elemento de uma tela.
 
-A seguir serão detalhados quais telas são necessárias para a conclusão do desafio, assim como os tipos de campos disponíveis para a interação do usuário.
+O app possui seis telas(login, cadastro, home, detalhes, voto e criar tópico).
 
-### Tipo de tela – FORMULARIO
+A rota inicial "/" redireciona para "/home", que é um rota sem proteção, nela podem ser vistos as votações abertas e que podem ser filtradas pelo campo de texto na parte superior(filtro por categoria). caso o usuário seja um administrador, haverá um botão para criar novas pautas.
 
-Criar um formulário para cadastro de uma pauta com o tempo de sessão.
+A tela de votação é protegida, e requer que o usuário esteja logado. caso nao esteja, será redirecionado para o login e após entrar, será redirecionado de volta para a tela de votação.
 
-### Tipo de tela – SELECAO
+Caso o usuário nao possua uma conta, ele pode criar uma, será solicitado nome, email, cpf e senha(com confirmação). Para validar o voto é necessário informar o cpf vinculado que foi vinculado a conta na hora do cadastro.
 
-Exibir uma lista de pautas para que o usuário acesse e consiga votar.
+Na tela de detalhes podemos ver os dados da pauta e o resultado da votação.
 
-Apenas pautas com sessão disponíveis devem ser exibidas.
+Na tela de criação de pauta, inserimos os dados necessários para criar um nova votação. Apenas administradores podem acessar essa tela e criar pautas, esta rota é protegida por um AdminGuard.
 
-Deve ser possível filtrar uma pauta por **categoria**
+Todos as telas e componentes estão testados, garantindo que todos campos necessários para o funcionamento estão disponíveis e que em caso de erro, cada componente sabe como se comportar sem depender da nada externo.
 
-### Tipo de tela – VOTACAO
+Para buscar dados que são exibidos na tela foi utilizado async pipe, e também foi criado um pipe customizado para mostrar a contagem regressiva da sessão de votação
 
-Exibir os dados da pauta e as opções de voto disponíveis.
-
-Ao acessar a votação uma sessão precisa estar aberta para a pauta em questão.
-
-Pautas com sessão expiradas não podem receber votos.
-
-A votação pode ser acessada por qualquer pessoa com link, sendo necessário informar o CFP antes de votar.
-
-### Tipo de tela – DETALHES
-
-Exibir os dados da pauta, quantidade de votos total e se a mesma foi aprovada.
-
-Ao acessar os detalhes deve exibir se a sessão já terminou.
-
-## O que será analisado
-
-- Simplicidade no design da solução (evitar over engineering)
-- Organização do código
-- Arquitetura do projeto
-- Boas práticas de programação (manutenibilidade, legibilidade etc)
-- Possíveis bugs
-- Tratamento de erros e exceções
-- Explicação breve do porquê das escolhas tomadas durante o desenvolvimento da solução
-- Uso de testes automatizados e ferramentas de qualidade
-- Limpeza do código
-- Documentação do código e da API
-- Logs da aplicação
-- Mensagens e organização dos commits
-- Layout responsivo
