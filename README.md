@@ -12,7 +12,7 @@ npm install && npm start
 ## Teste API
 Para rodar os testes execute
 ```bash
-npm test
+npm test -- --coverage
 ```
 Atualmente o backend está com 73 testes. Para testar o repository do typeorm, que funciona em postgres/mysql foi utilizado sqlite. o tipo DateTime/Timestamp não é compatível nos dois bancos de dados e para isso os schemas que utilizavam esse tipo de dado fora reescritos. Também foi gerado um arquivos de conexao específico para o sqlite. Nos testes o tipo de repository injetado foi o utilizado na aplicação de produção.
 
@@ -27,6 +27,13 @@ cpf: 35207752049
 ## Documentação da API
 https://documenter.getpostman.com/view/5983381/2sA2r6Y4hr#1e9a3c64-0a09-4774-b67f-8260437fceca
 
+## Banco de dados
+  A modelagem do banco foi bem simples, uma representação gráfica pode ser encontrada na pasta /images caso não consiga visualizar por aqui.
+  ![screenshot](/images/model.png)
+
+  Optou-se por salvar os votos na forma de strings e nao booleans para nao fechar o sistema apenas a votos de sim e não.
+  O usuário está separado de suas credencias e de suas atribuições administrativas.
+  cada tópico pode ter várias sessoes, porém somente uma ativa(bloqueio nas regras de negócio do controller)
 
 ## Arquitetura
   Foi optado por usar uma arquitetura baseada em clean architecture, onde podemos separar as responsabilidades de cada componente do sistema e também evitamos poluir as nossa entidades e regras de negócio com dependências de pacotes externos que podem ser alterados e depreciados a qualquer momentos.
@@ -91,4 +98,11 @@ Na tela de criação de pauta, inserimos os dados necessários para criar um nov
 a maior parte das telas e componentes estão testados, garantindo que todos campos necessários para o funcionamento estão disponíveis e que em caso de erro, cada componente sabe como se comportar sem depender da nada externo.
 
 Para buscar dados que são exibidos na tela foi utilizado async pipe, e também foi criado um pipe customizado para mostrar a contagem regressiva da sessão de votação
+
+
+## Melhorias
+  Alguns pontos que sei que podem ser alterados para melhorar a aplicação:
+  * Aplicar injeção de dependência da maneira correta com algum container de DI.
+  * Aplicar paginação para usuários e pautas
+  * Especificar melhor as mensagens de erro, deixando 1:1, e refatorar erros retornados pelas rotas.
 
