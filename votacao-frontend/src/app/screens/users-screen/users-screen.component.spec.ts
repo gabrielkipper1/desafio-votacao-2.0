@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UsersScreenComponent } from './users-screen.component';
+import { HttpClient } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('UsersScreenComponent', () => {
   let component: UsersScreenComponent;
@@ -8,10 +10,11 @@ describe('UsersScreenComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [UsersScreenComponent]
+      imports: [UsersScreenComponent, HttpClientTestingModule],
+      providers: [HttpClient]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(UsersScreenComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

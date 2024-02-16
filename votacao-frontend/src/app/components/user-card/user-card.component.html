@@ -1,4 +1,4 @@
-<mat-card class="user-card">
+<mat-card *ngIf="user" class="user-card">
     <mat-card-header>
         <div mat-card-avatar class="user-avatar">
             <mat-icon class="icon-avatar"> account_circle</mat-icon>
@@ -15,4 +15,14 @@
             {{ user.isadmin ? 'Remover administrador' : 'Adicionar como administrador' }}
         </button>
     </mat-card-actions>
+</mat-card>
+
+<!-- user undefined -->
+<mat-card class="user-card">
+    <mat-card-header>
+        <div mat-card-avatar class="user-avatar">
+            <mat-icon class="icon-avatar"> account_circle</mat-icon>
+        </div>
+        <mat-card-subtitle>Erro ao carregar usuário</mat-card-subtitle>
+    </mat-card-header>
 </mat-card>

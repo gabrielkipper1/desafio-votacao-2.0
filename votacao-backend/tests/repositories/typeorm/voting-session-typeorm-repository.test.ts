@@ -40,5 +40,13 @@ describe('VotingSessionTypeORMRepository', () => {
         expect(foundVotingSession?.id).toEqual(savedVotingSession.id);
     });
 
+    it("should get a voting sessions by topic", async () => {
+        const topic = await topicRepository.createVotingTopic(VotingTopic.create("Foo Topic", "Foo description"));
+        const votingSession = VotingSession.create(topic, 10);
+        const savedVotingSession = await repository.createVotingSession(votingSession);
+        const foundVotingSession = await repository.getVotingSessionByTopicId(topic.id as number);
+        expect(foundVotingSession.length).toEqual(1);
+    })
+
 });
 

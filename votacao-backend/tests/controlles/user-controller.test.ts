@@ -1,6 +1,7 @@
 import { MockUserRepository } from "../mocks/mock-user-repository";
 import { User } from "../../src/entities/user";
 import { UserController } from "../../src/controllers/user-controller";
+import { UserRole } from "../../src/interfaces/user-with-role";
 
 describe("UserController", () => {
     let userController: UserController;
@@ -30,4 +31,19 @@ describe("UserController", () => {
         expect(foundUser).toBeUndefined();
     });
 
+    it("should get a user by email", async () => {
+        const email = "test@test.com";
+        const user = User.existing(1, "Foo User", email, "1234");
+        await userRepository.saveUser(user);
+        const foundUser = await userController.getUserByEmail(email);
+        expect(foundUser?.email).toEqual(email);
+    })
+
+    it("should get a user by cpf", async () => {
+        const cpf = "1234";
+        const user = User.existing(1, "Foo User", "test@test.com", cpf);
+        await userRepository.saveUser(user);
+        const foundUser = await userController.getUserByCpf(cpf);
+        expect(foundUser?.cpf).toEqual(cpf);
+    });
 });

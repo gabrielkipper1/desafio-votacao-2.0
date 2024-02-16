@@ -1,6 +1,7 @@
 import { User } from "../entities/user";
 import { BadRequestError } from "../exceptions/bad-request-error";
 import { ERROR_MESSAGES } from "../exceptions/erro-messages";
+import { UserRole } from "../interfaces/user-with-role";
 import { UserRepository } from "../repositories/interfaces/user-repository";
 
 export class UserController {
@@ -29,7 +30,7 @@ export class UserController {
         return await this.repository.getUserByCpf(cpf);
     }
 
-    async getUsers() {
+    async getUsersRole(): Promise<UserRole[]> {
         return await this.repository.getUsersRole();
     }
 }

@@ -11,7 +11,7 @@ export const UserRoutes = (repository: UserRepository) => {
     const controller = new UserController(repository);
 
     router.get('/user', async (req, res) => {
-        const users = await controller.getUsers();
+        const users = await controller.getUsersRole();
         res.status(200).json({
             "users": users,
         });
