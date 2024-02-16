@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { VotingSessionController } from "../controllers/voting-sessions-controller";
-import { VotingSessionRepository } from "../repositories/interfaces/voting-session-repository";
-import { VotingSession } from "../entities/voting-session";
-import { VotingSessionPostData } from "../interfaces/voting-session-post-data";
+import { VotingSessionController } from "../../controllers/voting-sessions-controller";
+import { VotingSessionRepository } from "../../repositories/interfaces/voting-session-repository";
+import { VotingSession } from "../../entities/voting-session";
+import { VotingSessionPostData } from "../../interfaces/voting-session-post-data";
 
 export const VotingSessionRoutes = (repository: VotingSessionRepository) => {
     const router = Router();

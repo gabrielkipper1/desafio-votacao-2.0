@@ -1,17 +1,17 @@
 import { Router } from "express";
-import { AuthController } from "../controllers/auth-controller";
-import { AuthRepository } from "../repositories/interfaces/auth-repository";
-import { PasswordEncoder } from "../interfaces/password-encoder";
-import { UserSignInCredentials } from "../interfaces/user-sign-in-credentials";
-import { UserSignUpCredentials } from "../interfaces/user-sign-up-credentials";
-import { TokenEncoder } from "../interfaces/token-encoder";
-import { UserRepository } from "../repositories/interfaces/user-repository";
-import { User } from "../entities/user";
+import { AuthController } from "../../controllers/auth-controller";
+import { AuthRepository } from "../../repositories/interfaces/auth-repository";
+import { PasswordEncoder } from "../../interfaces/password-encoder";
+import { UserSignInCredentials } from "../../interfaces/user-sign-in-credentials";
+import { UserSignUpCredentials } from "../../interfaces/user-sign-up-credentials";
+import { TokenEncoder } from "../../interfaces/token-encoder";
+import { UserRepository } from "../../repositories/interfaces/user-repository";
+import { User } from "../../entities/user";
 import { constants } from "node:buffer";
-import { UserController } from "../controllers/user-controller";
-import { PasswordController } from "../controllers/password-controller";
-import { TokenController } from "../controllers/token-controller";
-import { UserAdminController } from "../controllers/user-admin-controller";
+import { UserController } from "../../controllers/user-controller";
+import { PasswordController } from "../../controllers/password-controller";
+import { TokenController } from "../../controllers/token-controller";
+import { UserAdminController } from "../../controllers/user-admin-controller";
 
 export const AuthRoutes = (tokenController: TokenController, userRepository: UserController, passwordController: PasswordController, adminController: UserAdminController) => {
     const controller = new AuthController(passwordController, userRepository, tokenController, adminController);

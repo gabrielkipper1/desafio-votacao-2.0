@@ -1,13 +1,13 @@
 import { Router } from "express";
-import { VotingTopicController } from "../controllers/voting-topic-controller";
-import { VotingTopic } from "../entities/voting-topic";
-import { VotingTopicRepository } from "../repositories/interfaces/voting-topic-repository";
-import { VotingOption } from "../entities/voting-options";
-import { VotingSessionController } from "../controllers/voting-sessions-controller";
-import { VotingSession } from "../entities/voting-session";
+import { VotingTopicController } from "../../controllers/voting-topic-controller";
+import { VotingTopic } from "../../entities/voting-topic";
+import { VotingTopicRepository } from "../../repositories/interfaces/voting-topic-repository";
+import { VotingOption } from "../../entities/voting-options";
+import { VotingSessionController } from "../../controllers/voting-sessions-controller";
+import { VotingSession } from "../../entities/voting-session";
 import { listenerCount } from "process";
-import { VotingTopicPostData } from "../interfaces/voting-topic-post-data";
-import { TopicSearchData } from "../interfaces/topic-search-data";
+import { VotingTopicPostData } from "../../interfaces/voting-topic-post-data";
+import { TopicSearchData } from "../../interfaces/topic-search-data";
 
 export const VotingTopicRoutes = (repository: VotingTopicRepository, sessionController: VotingSessionController) => {
     const router = Router();

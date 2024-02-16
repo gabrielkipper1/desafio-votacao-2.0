@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { UserController } from '../controllers/user-controller';
-import { UserRepository } from '../repositories/interfaces/user-repository';
-import { User } from '../entities/user';
-import { UserJsonParser } from '../data-parsers/json/user-from-json';
+import { UserController } from '../../controllers/user-controller';
+import { UserRepository } from '../../repositories/interfaces/user-repository';
+import { User } from '../../entities/user';
+import { UserJsonParser } from '../../data-parsers/json/user-from-json';
 import { parse } from 'path';
 
 export const UserRoutes = (repository: UserRepository) => {

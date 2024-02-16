@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { VoteRepository } from "../repositories/interfaces/vote-repository";
-import { VoteController } from "../controllers/vote-controller";
-import { VotePostData } from "../interfaces/vote-post-data";
-import { UserJWTMiddleware } from "../middlewares/user-jwt-middleware";
-import { UserJsonParser } from "../data-parsers/json/user-from-json";
+import { VoteRepository } from "../../repositories/interfaces/vote-repository";
+import { VoteController } from "../../controllers/vote-controller";
+import { VotePostData } from "../../interfaces/vote-post-data";
+import { UserJWTMiddleware } from "../../middlewares/user-jwt-middleware";
+import { UserJsonParser } from "../../data-parsers/json/user-from-json";
 
 export const VoteRoutes = (repository: VoteRepository) => {
     const router = Router();
