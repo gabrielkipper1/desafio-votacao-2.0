@@ -6,7 +6,7 @@
 
 * Execute o comando para instalar as dependências e rodas o projeto
 ```bash
-npm install && npm run
+npm install && npm start
 ```
 
 ## Teste API
