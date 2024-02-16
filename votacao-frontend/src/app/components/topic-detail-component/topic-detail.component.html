@@ -1,0 +1,22 @@
+<div class="root">
+    <mat-card class="card">
+        <!-- card header title-->
+        <div>
+            <mat-card-header class="header">Informações</mat-card-header>
+        </div>
+
+        <!-- description -->
+        <div class="topic">
+            <p class="topic-header">Pauta</p>
+            <p *ngIf="topic && topic.description" class="topic-description">{{topic.description}}</p>
+            <p *ngIf="!topic || !topic.description" class="no-description">Descrição não informada</p>
+        </div>
+
+        <!-- category -->
+        <div class="category">
+            <p class="category-header">Categoria</p>
+            <p *ngIf="topic && topic.category" class="topic-category">{{topic.category}}</p>
+            <p *ngIf="!topic || !topic.category" class="no-category">Categoria não informada</p>
+        </div>
+    </mat-card>
+</div>

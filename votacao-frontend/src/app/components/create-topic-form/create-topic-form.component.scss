@@ -1,0 +1,52 @@
+.background {
+    background-color: #f5f5f5;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    flex-direction: row;
+}
+
+.topic-div {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.topic-form {
+    margin: auto;
+    padding: 20px;
+    width: 450px;
+}
+
+.mat-form-field {
+    display: contents;
+    max-width: 700px;
+    width: 80%;
+}
+
+
+.create-button {
+    margin: auto;
+    display: block;
+    margin-top: 20px;
+    max-width: 120px;
+    width: 100%;
+}
+
+mat-card {
+    padding: 20px;
+    margin-top: 20px;
+    width: 100%;
+    max-width: 780px;
+    margin: auto;
+    border-radius: 20px;
+}

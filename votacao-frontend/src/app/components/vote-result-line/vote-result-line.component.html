@@ -1,0 +1,16 @@
+<div *ngIf="!errorMessage" class="result">
+    <!-- vote option and vote count texts  -->
+    <div class="text-line">
+        <p class="option">{{displayOption}}</p>
+        <p class="total">{{result.votes}}</p>
+    </div>
+    <!-- vote result bar -->
+    <div *ngIf="showBar" class="bar-div">
+        <mat-progress-bar [value]="fillPercentage" class="bar" mode="determinate"
+            [color]="lineColor"></mat-progress-bar>
+    </div>
+</div>
+
+<div class="error" *ngIf="errorMessage">
+    <p class="error-message">errorMessage</p>
+</div>

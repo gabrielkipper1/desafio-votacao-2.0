@@ -1,0 +1,10 @@
+<h2 mat-dialog-title>Digite o CPF vinculado a sua conta para validar seu voto</h2>
+<mat-dialog-content>
+    <mat-form-field>
+        <input matInput placeholder="Digite seu CPF" [(ngModel)]="cpf">
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button color="warn" mat-button mat-dialog-close>Cancelar</button>
+    <button color="primary" mat-button [mat-dialog-close]="cpf" cdkFocusInitial>Votar</button>
+</mat-dialog-actions>
