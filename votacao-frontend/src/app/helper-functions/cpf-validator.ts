@@ -1,4 +1,6 @@
 export function validateCPF(cpf: string): boolean {
+    console.log('Validating CPF');
+    console.log(cpf);
     const cleanedCPF = cpf.replace(/\D/g, '');
 
     if (cleanedCPF.length !== 11 || cleanedCPF.split('').every(digit => digit === cleanedCPF[0])) {

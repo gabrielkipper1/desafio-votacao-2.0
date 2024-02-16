@@ -22,9 +22,6 @@ import { getErrorMessage } from '../../helper-functions/get-error-message';
   providers: [TopicService]
 })
 export class CreateTopicFormComponent {
-  description!: string;
-  category!: string;
-  duration!: number;
   topicForm!: FormGroup;
 
   constructor(private topicService: TopicService, private formBuilder: FormBuilder, private router: Router, private snackbar: MatSnackBar) { }
@@ -38,6 +35,11 @@ export class CreateTopicFormComponent {
   }
 
   createTopic() {
+    if (this.topicForm.invalid) {
+      console.log('Invalid form');
+      return;
+    }
+
     this.topicService.createTopic({
       description: this.topicForm.value.description,
       category: this.topicForm.value.category,

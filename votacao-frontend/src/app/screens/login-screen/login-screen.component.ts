@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -17,7 +17,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-login-screen',
   standalone: true,
-  imports: [MatCardModule, MatFormFieldModule, FormsModule, MatButtonModule, MatInputModule, CommonModule, HttpClientModule],
+  imports: [MatCardModule, MatFormFieldModule, FormsModule, MatButtonModule, MatInputModule, CommonModule, HttpClientModule, ReactiveFormsModule],
   templateUrl: './login-screen.component.html',
   styleUrl: './login-screen.component.scss',
   providers: [TokenService, HttpClient, RouteService]
@@ -41,7 +41,7 @@ export class LoginScreenComponent {
   }
 
   login() {
-    this.authService.signIn({ email: this.email, password: this.password }).subscribe({
+    this.authService.signIn({ email: this.loginForm.value.email, password: this.loginForm.value.password }).subscribe({
       next: (value: UserTokenData) => {
         this.onSignUp(value);
       },

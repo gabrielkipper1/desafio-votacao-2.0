@@ -1,30 +1,41 @@
 <div class="background">
-    <form class="signup-form" #signupForm="ngForm" (keydown.enter)="onEnterKey()">
+    <form class="signup-form" [formGroup]="signupForm" (keydown.enter)="onEnterKey()">
         <mat-card class="form-card">
             <mat-card-header>
                 <mat-card-title>Cadastro</mat-card-title>
             </mat-card-header>
             <mat-card-content class="form-content">
                 <mat-form-field>
-                    <input matInput placeholder="Nome" name="nome" [(ngModel)]="nome" required>
-                    <mat-error *ngIf="signupForm.controls['nome']?.invalid">Nome é obrigatório</mat-error>
+                    <input matInput placeholder="Nome" name="name" formControlName="name" required>
+                    <mat-error
+                        *ngIf="signupForm.controls['name']?.invalid && (signupForm.dirty || signupForm.touched)">Nome é
+                        obrigatório</mat-error>
                 </mat-form-field>
                 <mat-form-field>
-                    <input matInput placeholder="Email" name="email" [(ngModel)]="email" required email>
-                    <mat-error *ngIf="signupForm.controls['email']?.invalid">Email inválido</mat-error>
+                    <input matInput placeholder="Email" name="email" formControlName="email" required email>
+                    <mat-error
+                        *ngIf="signupForm.controls['email']?.invalid && (signupForm.dirty || signupForm.touched)">Email
+                        inválido</mat-error>
                 </mat-form-field>
                 <mat-form-field>
-                    <input matInput placeholder="CPF" name="cpf" [(ngModel)]="cpf" required>
-                    <mat-error *ngIf="signupForm.controls['cpf']?.invalid">CPF é obrigatório</mat-error>
+                    <input matInput placeholder="CPF" name="cpf" formControlName="cpf" required>
+                    <mat-error
+                        *ngIf="signupForm.controls['cpf']?.invalid && (signupForm.dirty || signupForm.touched)">CPF
+                        inválido</mat-error>
                 </mat-form-field>
                 <mat-form-field>
-                    <input matInput type="password" placeholder="Senha" name="password" [(ngModel)]="password" required>
-                    <mat-error *ngIf="signupForm.controls['password']?.invalid">Senha é obrigatória</mat-error>
+                    <input matInput type="password" placeholder="Senha" name="password" formControlName="password"
+                        required>
+                    <mat-error
+                        *ngIf="signupForm.controls['password']?.invalid && (signupForm.dirty || signupForm.touched)">Senha
+                        é obrigatória</mat-error>
                 </mat-form-field>
                 <mat-form-field>
                     <input matInput type="password" placeholder="Confirmar Senha" name="confirmPassword"
-                        [(ngModel)]="confirmPassword" required>
-                    <mat-error *ngIf="password !== confirmPassword">Senhas não conferem</mat-error>
+                        formControlName="confirmPassword" required>
+                    <mat-error
+                        *ngIf="signupForm.hasError('passwordMismatch') && (signupForm.dirty || signupForm.touched)">Senhas
+                        não conferem</mat-error>
                 </mat-form-field>
             </mat-card-content>
             <mat-card-actions class="buttons">
